@@ -7,10 +7,15 @@
   ******************************************************************************
   * @attention
   * This project is for learning only. If it is for commercial use, please contact the author.
+	*
+	*Copyright (c) 2020 Lanceli All rights reserved.
   ******************************************************************************
   */
 #include "main.h"
 #include "lwip/api.h"
+#include <string.h>
+
+extern UARTBufferTypeDef	RxdBufferStructure;
 
 void TCPSever_Task(void *arg)
 {
@@ -21,8 +26,8 @@ void TCPSever_Task(void *arg)
   err_t err, accept_err, recv_err;
 	static vu8 connect_state = RESET;
 	
-	etherBuffer = pvPortMalloc(Eth_ReceiveBufferLength);
-	if(etherBuffer == NULL)
+	etherBuffer = pvPortMalloc(UART_RX_BUFFER_SIZE);
+	if(etherBuffer == NULL){}
 
   LWIP_UNUSED_ARG(arg);
 
@@ -71,7 +76,7 @@ void TCPSever_Task(void *arg)
 								do 
 								{
 									netbuf_data(rawbuf, &etherBuffer, &len);
-									netconn_write(newconn, etherBuffer, len, NETCONN_COPY);
+									UartDmaStreamSend(etherBuffer, len);
 								}
 								while (netbuf_next(rawbuf) >= 0);
 								netbuf_delete(rawbuf);
@@ -96,7 +101,16 @@ void TCPSever_Task(void *arg)
 							break;
 						}						
 
-
+						while(RxdBufferStructure.readableLength)
+						{
+							len = RxdBufferStructure.readableLength;
+							if(ReadUartRxBufferToEtherBuffer(&RxdBufferStructure, etherBuffer, len))
+							{
+								netconn_write(newconn, etherBuffer, len, NETCONN_COPY);
+								memset(etherBuffer, 0x00, UART_RX_BUFFER_SIZE);
+							}
+						}
+						
 	  				Delay(10);
 						if(Eth_GetLinkStatus() != SET)
 						{

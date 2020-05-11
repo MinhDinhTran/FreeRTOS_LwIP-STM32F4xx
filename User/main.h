@@ -37,10 +37,12 @@
 #include "main_task.h"
 #include "netif_config.h"
 #include "tcp_task.h"
+#include "uart_task.h"
 
 #include "stm32f4xx.h"
 #include "stm32f4x7_eth.h"
 #include "stm32f4xx_eth_bsp.h"
+#include "stm32f4xx_uart_bsp.h"
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
@@ -97,7 +99,9 @@
 
 #define Delay(nCount)	vTaskDelay(nCount)
 
-#define ETH_IRQnPriority	13
+#define USART1_IRQnPriority								7
+#define DMA2_Stream5_IRQnPriority					8
+#define ETH_IRQnPriority									13
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
 

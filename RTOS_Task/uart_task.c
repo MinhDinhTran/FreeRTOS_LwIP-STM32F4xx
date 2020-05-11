@@ -57,6 +57,8 @@ void UART1_Receive_Task(void)
 		//		printf("M0:%d-%d\r\n",RxdBufferStructure.uartRecv_Counter,RxdBufferStructure.dmaCompleteCounter);
 			}
 		}
+		
+		
 		/*****************Serial port idle interrupt execution***********************/
 		if(xSemaphoreTake(Semaphore_uart_idle, Wait_BlockTime_uart_idle) == pdTRUE)
 		{
@@ -81,15 +83,24 @@ void UART1_Receive_Task(void)
 			RxdBufferStructure.dmaCompleteCounter = 0;
 			UARTWirteResidualLength = 0;
 		}
+		
+		
+		
 #ifdef	UART_IT_TC
 		if(xSemaphoreTake(Semaphore_uart_tc, Wait_BlockTime_uart_tc) == pdTRUE)
 		{
 			
 		}
 #endif
+		
 		Delay(10);
 	}
 }
+
+/*uart sending function
+* sending buffer
+* sending length
+*/
 
 void UartDmaStreamSend(uint8 *buffer, uint16 length)
 {
@@ -106,6 +117,8 @@ void UartRxBufferPointer_Init(void)
 {	
 	uartToEtherRxBuffer_HeadP = pvPortMalloc(UART_ETHER_BUFFER_SIZE);
 	if(uartToEtherRxBuffer_HeadP == NULL){}
+		
+	RxdBufferStructure.readwriteLock = RESET;
 	
 	RxdBufferStructure.wirteP = uartToEtherRxBuffer_HeadP;
 	RxdBufferStructure.readP = uartToEtherRxBuffer_HeadP;
@@ -140,21 +153,26 @@ uint8 WirteToUartRxBufferFromRxBuffer0(UARTBufferTypeDef *p, uint16 length)
 {
 	uint8 reval = RESET;
 	
+	RxdBufferStructure.readwriteLock = SET;/*lock the buffer*/
+	
 	if(length)
 	{
 		/*The buffer is full,There's not enough space left*/
-		if(length > p->wirteableLength)		
+		if(length > p->wirteableLength)
 			return RESET;
+
 		
 		if(length >= p->WirteResidualLength)
 		{
 			memcpy(p->wirteP,	p->RxBuffer0Structure.rP, p->WirteResidualLength);
 			p->wirteP = uartToEtherRxBuffer_HeadP;
+			
 			p->RxBuffer0Structure.rP += (uint32_t)p->WirteResidualLength;
 			p->RxBuffer0Structure.wP += (uint32_t)p->WirteResidualLength;/*record the RxBuffer0 wirting pointer*/
 			
-			memcpy(p->wirteP,	p->RxBuffer0Structure.rP, (length - p->WirteResidualLength));
+			memcpy(p->wirteP,	(p->RxBuffer0Structure.rP+p->WirteResidualLength), (length - p->WirteResidualLength));
 			p->wirteP += (uint32_t)(length - p->WirteResidualLength);/*record the UartRxBuffer wirting point*/
+			
 			p->RxBuffer0Structure.rP += (uint32_t)(length - p->WirteResidualLength);
 			p->RxBuffer0Structure.wP += (uint32_t)(length - p->WirteResidualLength);/*record the RxBuffer0 wirting pointer*/
 		}
@@ -162,11 +180,13 @@ uint8 WirteToUartRxBufferFromRxBuffer0(UARTBufferTypeDef *p, uint16 length)
 		{
 			memcpy(p->wirteP,	p->RxBuffer0Structure.rP, length);
 			p->wirteP += (uint32_t)(length);/*record the UartRxBuffer wirting point*/
+			
 			p->RxBuffer0Structure.rP += (uint32_t)length;
 			p->RxBuffer0Structure.wP += (uint32_t)length;/*record the RxBuffer0 wirting pointer*/
 		}
 		
 		p->WirteResidualLength = (uint16_t)(uartToEtherRxBuffer_HeadP + UART_ETHER_BUFFER_SIZE - p->wirteP);
+		
 		if(p->wirteP >=	p->readP)
 		{
 			p->wirteableLength = (uint16_t)((p->readP - uartToEtherRxBuffer_HeadP) + p->WirteResidualLength);
@@ -182,6 +202,7 @@ uint8 WirteToUartRxBufferFromRxBuffer0(UARTBufferTypeDef *p, uint16 length)
 		reval = SET;
 	}
 	else	reval = RESET;
+	
 	return (reval);
 }
 
@@ -195,6 +216,8 @@ uint8 WirteToUartRxBufferFromRxBuffer1(UARTBufferTypeDef *p, uint16 length)
 {
 	uint8 reval = RESET;
 	
+	RxdBufferStructure.readwriteLock = SET;/*lock the buffer*/
+
 	if(length)
 	{
 		/*The buffer is full,There's not enough space left*/
@@ -208,7 +231,7 @@ uint8 WirteToUartRxBufferFromRxBuffer1(UARTBufferTypeDef *p, uint16 length)
 			p->RxBuffer1Structure.rP += (uint32_t)p->WirteResidualLength;
 			p->RxBuffer1Structure.wP += (uint32_t)p->WirteResidualLength;/*record the RxBuffer0 wirting pointer*/
 			
-			memcpy(p->wirteP,	p->RxBuffer1Structure.rP, (length - p->WirteResidualLength));
+			memcpy(p->wirteP,	(p->RxBuffer1Structure.rP+p->WirteResidualLength), (length - p->WirteResidualLength));
 			p->wirteP += (uint32_t)(length - p->WirteResidualLength);/*record the UartRxBuffer wirting point*/
 			p->RxBuffer1Structure.rP += (uint32_t)(length - p->WirteResidualLength);
 			p->RxBuffer1Structure.wP += (uint32_t)(length - p->WirteResidualLength);/*record the RxBuffer0 wirting pointer*/
@@ -222,6 +245,7 @@ uint8 WirteToUartRxBufferFromRxBuffer1(UARTBufferTypeDef *p, uint16 length)
 		}
 		
 		p->WirteResidualLength = (uint16_t)(uartToEtherRxBuffer_HeadP + UART_ETHER_BUFFER_SIZE - p->wirteP);
+		
 		if(p->wirteP >=	p->readP)
 		{
 			p->wirteableLength = (uint16_t)((p->readP - uartToEtherRxBuffer_HeadP) + p->WirteResidualLength);
@@ -271,6 +295,8 @@ uint8 ReadUartRxBufferToEtherBuffer(UARTBufferTypeDef *p, uint8 *EtherBuffer, ui
 {
 	uint8 reval = RESET;
 	
+	RxdBufferStructure.readwriteLock = RESET;/*unlock the buffer*/
+	
 	if(length)
 	{
 		/*Check whether there is data readable in buffer*/
@@ -292,19 +318,29 @@ uint8 ReadUartRxBufferToEtherBuffer(UARTBufferTypeDef *p, uint8 *EtherBuffer, ui
 		}
 		
 		p->ReadResidualLength = (uint16_t)(uartToEtherRxBuffer_HeadP + UART_ETHER_BUFFER_SIZE - p->readP);
-		if(p->wirteP >=	p->readP)
+		
+		if(RxdBufferStructure.readwriteLock != RESET)
 		{
-			p->wirteableLength = (uint16_t)((p->readP - uartToEtherRxBuffer_HeadP) + p->WirteResidualLength);
-			p->readableLength = (uint16_t)(p->wirteP - p->readP);
+			return RESET;
 		}
 		else
 		{
-			p->wirteableLength =  (uint16_t)(p->readP - p->wirteP);
-			p->readableLength = (uint16_t)((p->wirteP-uartToEtherRxBuffer_HeadP) + p->ReadResidualLength);
+			if(p->wirteP >=	p->readP)
+			{
+				p->wirteableLength = (uint16_t)((p->readP - uartToEtherRxBuffer_HeadP) + p->WirteResidualLength);
+				p->readableLength = (uint16_t)(p->wirteP - p->readP);
+			}
+			else
+			{
+				p->wirteableLength =  (uint16_t)(p->readP - p->wirteP);
+				p->readableLength = (uint16_t)((p->wirteP-uartToEtherRxBuffer_HeadP) + p->ReadResidualLength);
+			}
+			reval = SET;
 		}
-		reval = SET;
 	}
 	else reval = RESET;
+	
+	if(RxdBufferStructure.readwriteLock != RESET)  reval = RESET;
 	
 	return reval;
 }

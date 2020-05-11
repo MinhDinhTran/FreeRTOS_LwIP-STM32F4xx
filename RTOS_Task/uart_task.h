@@ -21,6 +21,9 @@ typedef struct
 {
 	uint8 *readP;
 	uint8 *wirteP;
+	
+	uint8 readwriteLock;
+	
 	uint16		WirteResidualLength;
 	uint16		ReadResidualLength;
 	uint16		wirteableLength;
@@ -34,6 +37,9 @@ typedef struct
 	uint16 		uartRecv_Counter;
 	uint16		dmaCompleteCounter;
 	uint8			dmaReversalValue;
+	
+	uint32    send_counter;
+	uint32    receive_counter;
 }UARTBufferTypeDef;
 
 

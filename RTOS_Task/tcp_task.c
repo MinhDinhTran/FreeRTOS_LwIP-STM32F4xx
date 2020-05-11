@@ -28,12 +28,12 @@ void TCPSever_Task(void *arg)
 	
 	etherBuffer = pvPortMalloc(UART_RX_BUFFER_SIZE);
 	if(etherBuffer == NULL){}
-
+	
   LWIP_UNUSED_ARG(arg);
-
+	
   /* Create a new connection identifier. */
   conn = netconn_new(NETCONN_TCP);
-  
+	
   if (conn!=NULL)
   {
     /* Bind connection to well known port number 7. */
@@ -53,6 +53,7 @@ void TCPSever_Task(void *arg)
 					if(connect_state == RESET)	accept_err = netconn_accept(conn, &newconn);
 					if(accept_err == ERR_OK)
 					{
+						printf("connected\r\n");
 						connect_state = SET;
 						newconn->recv_timeout = 10;
 						break;
@@ -99,18 +100,20 @@ void TCPSever_Task(void *arg)
 							netconn_delete(newconn);
 							connect_state = RESET;
 							break;
-						}						
+						}
 
 						while(RxdBufferStructure.readableLength)
-						{
+						{							
 							len = RxdBufferStructure.readableLength;
 							if(ReadUartRxBufferToEtherBuffer(&RxdBufferStructure, etherBuffer, len))
 							{
-								netconn_write(newconn, etherBuffer, len, NETCONN_COPY);
-								memset(etherBuffer, 0x00, UART_RX_BUFFER_SIZE);
+								netconn_write(newconn, etherBuffer, len, NETCONN_COPY);								
+							}
+							else
+							{
+								printf("the buffer have changed\r\n");
 							}
 						}
-						
 	  				Delay(10);
 						if(Eth_GetLinkStatus() != SET)
 						{

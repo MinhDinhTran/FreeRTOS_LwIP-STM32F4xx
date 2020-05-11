@@ -103,15 +103,15 @@ void TCPSever_Task(void *arg)
 						}
 
 						while(RxdBufferStructure.readableLength)
-						{							
+						{
 							len = RxdBufferStructure.readableLength;
-							if(ReadUartRxBufferToEtherBuffer(&RxdBufferStructure, etherBuffer, len))
+							if(ReadUartRxBufferToEtherBuffer(&RxdBufferStructure, etherBuffer, len) == SET)
 							{
-								netconn_write(newconn, etherBuffer, len, NETCONN_COPY);								
+								netconn_write(newconn, etherBuffer, len, NETCONN_COPY);					
 							}
 							else
-							{
-								printf("the buffer have changed\r\n");
+							{								
+								printf("readbuffer return reset\r\n");
 							}
 						}
 	  				Delay(10);

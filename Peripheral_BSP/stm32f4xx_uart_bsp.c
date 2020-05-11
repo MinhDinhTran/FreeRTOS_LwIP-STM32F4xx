@@ -282,6 +282,7 @@ void DmaComplete_IRQ(void)
 {
   portBASE_TYPE xHigherPriorityTaskWoken = pdFALSE;
 	RxdBufferStructure.dmaReversalValue = !RxdBufferStructure.dmaReversalValue;
+	RxdBufferStructure.dmaCompleteCounter = RxdBufferStructure.uartRecv_Counter;
 
 	/* Give the semaphore to wakeup LwIP task */
 	xSemaphoreGiveFromISR( Semaphore_uart_dma, &xHigherPriorityTaskWoken );

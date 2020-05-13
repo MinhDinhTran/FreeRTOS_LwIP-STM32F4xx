@@ -102,6 +102,7 @@
 #define USART1_IRQnPriority								7
 #define DMA2_Stream5_IRQnPriority					8
 #define ETH_IRQnPriority									13
+
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
 

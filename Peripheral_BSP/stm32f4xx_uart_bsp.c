@@ -32,8 +32,6 @@ xSemaphoreHandle Semaphore_uart_tc = NULL;
 xSemaphoreHandle Semaphore_uart_dma = NULL;
 #endif
 
-
-
 /* Transmit buffer size */
 uint8_t RxBuffer0[UART_RX_BUFFER_SIZE] = {0};
 uint8_t RxBuffer1[UART_RX_BUFFER_SIZE] = {0};

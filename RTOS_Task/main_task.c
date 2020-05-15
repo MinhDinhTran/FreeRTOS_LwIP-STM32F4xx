@@ -15,7 +15,6 @@
 #include "main.h"
 
 TaskHandle_t Main_Task_Handle = NULL;/*Main Task Handle*/
-TaskHandle_t TCPSever_Task_Handle = NULL;
 
 static void Device_SetDefault(void)
 {
@@ -42,12 +41,12 @@ void Main_Task(void)
 	
 	taskENTER_CRITICAL();
 	
-	xReturn = xTaskCreate((TaskFunction_t)TCPSever_Task,
-						(const char*)"TCPSever_Task",
-						(uint32_t)TCPSever_Task_STACK_SIZE,
+	xReturn = xTaskCreate((TaskFunction_t)SegmentProcess_Task,
+						(const char*)"SegmentProcess_Task",
+						(uint32_t)SegmentProcess_Task_STACK_SIZE,
 						(void*)NULL,
-						(UBaseType_t)TCPSever_Task_PRIORITY,
-						(TaskHandle_t*)&TCPSever_Task_Handle);
+						(UBaseType_t)SegmentProcess_Task_PRIORITY,
+						(TaskHandle_t*)&SegmentProcess_Task_Handle);
 	if(pdPASS == xReturn){}
 	else{}
 		

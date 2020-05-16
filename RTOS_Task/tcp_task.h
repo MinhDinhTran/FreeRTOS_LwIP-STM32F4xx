@@ -7,7 +7,8 @@ extern "C" {
 	
 #define Eth_ReceiveBufferLength	256
 	
-extern void TCPSever_Task(void *arg);
+extern void SerialToEthernet_TCPSever_Task(void *arg);
+extern void SerialToEthernet_TCPClient_Task(void *arg);
 
 #ifdef __cplusplus
 }

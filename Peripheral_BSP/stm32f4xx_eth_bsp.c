@@ -8,6 +8,8 @@
   ******************************************************************************
   * @attention
   * This project is for learning only. If it is for commercial use, please contact the author.
+	*
+	*Copyright (c) 2020 Lanceli All rights reserved.
   ******************************************************************************
   */
 #include "main.h"
@@ -85,7 +87,11 @@ void ETH_GPIO_Config(void)
 	  ETH_RMII_TX_EN -------------------> PB11
 	  ETH_RMII_TXD0 --------------------> PB12
 	  ETH_RMII_TXD1 --------------------> PB13
-	  ETH_RESET-------------------------> PA0*/
+		if STM32F405
+	  ETH_RESET-------------------------> PA0
+		else
+		ETH_RESET-------------------------> PA5
+	*/
 					
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1|GPIO_Pin_2|GPIO_Pin_7;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
@@ -110,12 +116,22 @@ void ETH_GPIO_Config(void)
 	GPIO_PinAFConfig(GPIOB, GPIO_PinSource12, GPIO_AF_ETH);
 	GPIO_PinAFConfig(GPIOB, GPIO_PinSource13, GPIO_AF_ETH);
 	
+#ifndef STM32F405Rxxx
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
 	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
 	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
 	GPIO_Init(GPIOA, &GPIO_InitStructure);
+#endif
+#ifndef STM32F407Zxxx
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+	GPIO_Init(GPIOA, &GPIO_InitStructure);
+#endif	
 }
 
 /**

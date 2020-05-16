@@ -4,9 +4,16 @@
 #include "lwip/netif.h"
 
 #define LAN8720_PHY_ADDRESS  	0x00					//3.7.1 PHYAD[0]: PHY Address Configuration
-#define LAN8720_RST 		   		PAout(0) 			//LAN8720¸´Î»Òý½Å
 
-/* Ethernet Flags for EthStatus variable */   
+/*Reset pin*/
+#if STM32F405Rxxx
+#define LAN8720_RST 		   		PAout(0)
+#else
+#define LAN8720_RST 		   		PAout(5)
+#endif
+
+
+/* Ethernet Flags for EthStatus variable */
 #define ETH_INIT_FLAG           0x01 /* Ethernet Init Flag */
 #define ETH_LINK_FLAG           0x10 /* Ethernet Link Flag */
 

@@ -806,6 +806,11 @@
               <FileType>1</FileType>
               <FilePath>..\RTOS_Task\tcp_task.c</FilePath>
             </File>
+            <File>
+              <FileName>uart_task.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\RTOS_Task\uart_task.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -815,6 +820,11 @@
               <FileName>stm32f4xx_eth_bsp.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Peripheral_BSP\stm32f4xx_eth_bsp.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f4xx_uart_bsp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Peripheral_BSP\stm32f4xx_uart_bsp.c</FilePath>
             </File>
           </Files>
         </Group>

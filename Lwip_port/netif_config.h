@@ -7,6 +7,8 @@
   ******************************************************************************
   * @attention
   * This project is for learning only. If it is for commercial use, please contact the author.
+	*
+	*Copyright (c) 2020 Lanceli All rights reserved.
   ******************************************************************************
   */
 #ifndef __NETIF_CONFIG_H

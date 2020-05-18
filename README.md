@@ -5,11 +5,19 @@
 <a href="http://www.developerlab.cn/">[EVB schematic sheet/开发板资料]</a><br>
 <h4>introduce</h4>
 <p>Code can run on both EVBs, but make some changes, because the pins have some differents. Fortunately, the only pin need to change in the code that is RESRT pin on MAC PHY of LAN8720, the others are same definition. It mind can be match same base bord.</p>
+<h4>STM32F405RG-EVB</h4>
 
 ![STM32F405](https://github.com/laneston/Pictures/blob/master/STM32F405EVB.jpg)
 
-This EVB use MCU of STM32F405.
+<p>This EVB use MCU of STM32F405RGT6. It has 1 Mbyte of Flash memory, 192+4 Kbyte of SRAM. In addition to the network port of RMII, EVB also left other IO ports, including UART, SPI, IIC.
+
+</p>
+
+<h4>STM32F407ZG-EVB</h4>
 
 ![STM32F407-A](https://github.com/laneston/Pictures/blob/master/STM32F407EVB.jpg)
 
 ![STM32F407-B](https://github.com/laneston/Pictures/blob/master/STM32F407EVB-B.jpg)
+
+<P>This EVB use MCU of STM32F407ZGT6.  It has 1 Mbyte of Flash memory, 192+4 Kbyte of SRAM. In addition to the network port of RMII, EVB also left other IO ports, including UART, SPI, IIC.</P>
+<p>In addition to the above interface, the EVB add FSMC for NAND Flash and SRAM. It can be run larger content or complex algorithm. I designed it mainly for building FTP Server later.</p>

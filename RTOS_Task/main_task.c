@@ -58,6 +58,20 @@ void Main_Task(void)
 						(TaskHandle_t*)&UART1_Receive_Task_Handle);
 	if(pdPASS == xReturn){}
 	else{}
+
+	if(EmbeverStruct.dhcp_enable == ENABLE)
+	{
+		xReturn	= xTaskCreate((TaskFunction_t) LwipDHCP_Task,
+													(const char *)  "LwipDHCP_Task",		/*lint !e971 Unqualified char types are allowed for strings and single characters only. */
+													(configSTACK_DEPTH_TYPE) LwipDHCP_Task_STACK_SIZE,
+													(void * ) NULL,
+													(UBaseType_t) LwipDHCP_Task_PRIORITY,
+													(TaskHandle_t *) &LwipDHCP_Task_Handle);
+		if(pdFAIL == xReturn)
+		{}
+		else
+		{}
+	}
 		
 	taskEXIT_CRITICAL();
 	vTaskDelete(Main_Task_Handle);

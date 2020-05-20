@@ -811,6 +811,16 @@
               <FileType>1</FileType>
               <FilePath>..\RTOS_Task\uart_task.c</FilePath>
             </File>
+            <File>
+              <FileName>segment_task.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\RTOS_Task\segment_task.c</FilePath>
+            </File>
+            <File>
+              <FileName>dhcp_task.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\RTOS_Task\dhcp_task.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

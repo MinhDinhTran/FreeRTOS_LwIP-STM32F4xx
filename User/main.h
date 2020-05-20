@@ -37,8 +37,10 @@
 #include "main_task.h"
 #include "netif_config.h"
 #include "tcp_task.h"
+#include "dhcp_task.h"
 #include "uart_task.h"
 #include "segment_task.h"
+
 
 #include "stm32f4xx.h"
 #include "stm32f4x7_eth.h"

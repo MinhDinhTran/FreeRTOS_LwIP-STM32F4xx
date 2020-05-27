@@ -16,6 +16,8 @@
 
 TaskHandle_t Main_Task_Handle = NULL;/*Main Task Handle*/
 
+uint8_t ucHeap[ configTOTAL_HEAP_SIZE ] __attribute__((at(0x68000000)));
+
 static void Device_SetDefault(void)
 {
 	UartParam_Config();

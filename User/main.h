@@ -40,11 +40,13 @@
 #include "dhcp_task.h"
 #include "uart_task.h"
 #include "segment_task.h"
+#include "sram_task.h"
 
 
 #include "stm32f4xx.h"
 #include "stm32f4x7_eth.h"
 #include "stm32f4xx_eth_bsp.h"
+#include "stm32f4xx_fsmc_bsp.h"
 #include "stm32f4xx_uart_bsp.h"
 
 /* Exported types ------------------------------------------------------------*/

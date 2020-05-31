@@ -53,8 +53,8 @@
 #define configCPU_CLOCK_HZ							 ( SystemCoreClock )
 #define configTICK_RATE_HZ							 ( ( TickType_t ) 1000 )
 #define configMAX_PRIORITIES						 ( 10 )
-#define configMINIMAL_STACK_SIZE				 (( unsigned short ) 128 )
-#define configTOTAL_HEAP_SIZE						 ( ( size_t ) ( 512 * 1024 ) )
+#define configMINIMAL_STACK_SIZE				 (( unsigned short ) 64 )
+#define configTOTAL_HEAP_SIZE						 ( ( size_t ) ( 32 * 1024 ) )
 #define configMAX_TASK_NAME_LEN					 ( 10 )
 #define configUSE_TRACE_FACILITY				 1
 #define configUSE_16_BIT_TICKS					 0
@@ -69,7 +69,7 @@
 #define configGENERATE_RUN_TIME_STATS		 0
 #define configSUPPORT_DYNAMIC_ALLOCATION 1
 
-#define configAPPLICATION_ALLOCATED_HEAP 1			/*use external SRAM*/
+//#define configAPPLICATION_ALLOCATED_HEAP 1			/*use external SRAM*/
 
 /* Co-routine definitions. */
 #define configUSE_CO_ROUTINES 		       0

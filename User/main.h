@@ -48,6 +48,7 @@
 #include "stm32f4xx_eth_bsp.h"
 #include "stm32f4xx_fsmc_bsp.h"
 #include "stm32f4xx_uart_bsp.h"
+#include "stm32f4xx_heap_bsp.h"
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
@@ -108,6 +109,9 @@
 #define DMA2_Stream5_IRQnPriority					8
 #define ETH_IRQnPriority									13
 
+
+/*Debug Message*/
+#define HEAP_DEBUG
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
 

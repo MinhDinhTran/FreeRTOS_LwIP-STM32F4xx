@@ -43,6 +43,7 @@
 
 void USART_Config(uint32 boundrate, uint16 StopBits, uint16 Parity, uint16 HardwareFlowControl);
 extern void UART_Init(uint32 boundrate, uint16 StopBits, uint16 Parity, uint16 HardwareFlowControl);
+extern void UART_Init_115200(void);
 void UartRecv_IDLE_IRQ(void);
 void UartRecv_RXNE_IRQ(void);
 void UartTransmit_IRQ(void);

@@ -32,8 +32,6 @@ static struct netif *s_pxNetIf = NULL;
 
 xSemaphoreHandle s_xSemaphore = NULL;
 
-EmbeverConfig_TypeDef EmbeverStruct;
-
 uint8_t *Ether_Tx_Buff = NULL;
 uint8_t *Ether_Rx_Buff = NULL;
 /* Global pointer for last received frame infos */
@@ -93,9 +91,15 @@ void LwIP_Init(void)
   struct ip4_addr netmask;
   struct ip4_addr gw;
 	
-	Ether_Tx_Buff = pvPortMalloc(ETH_TXBUFNB*ETH_TX_BUF_SIZE);
+//	Ether_Tx_Buff = pvPortMalloc(ETH_TXBUFNB*ETH_TX_BUF_SIZE);
+//	if(Ether_Tx_Buff == NULL){}
+//	Ether_Rx_Buff = pvPortMalloc(ETH_TXBUFNB*ETH_TX_BUF_SIZE);
+//	if(Ether_Rx_Buff == NULL){}
+		
+	Ether_Tx_Buff = stSramMalloc(&HeapStruct_SRAM1, ETH_TXBUFNB*ETH_TX_BUF_SIZE);
 	if(Ether_Tx_Buff == NULL){}
-	Ether_Rx_Buff = pvPortMalloc(ETH_TXBUFNB*ETH_TX_BUF_SIZE);
+		
+	Ether_Rx_Buff = stSramMalloc(&HeapStruct_SRAM1, ETH_TXBUFNB*ETH_TX_BUF_SIZE);
 	if(Ether_Rx_Buff == NULL){}
 		
 	tcpip_init(NULL,NULL);

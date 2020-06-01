@@ -96,12 +96,6 @@ void LwIP_Init(void)
 	Ether_Rx_Buff = pvPortMalloc(ETH_TXBUFNB*ETH_TX_BUF_SIZE);
 	if(Ether_Rx_Buff == NULL){}
 		
-//	Ether_Tx_Buff = stSramMalloc(&HeapStruct_SRAM1, ETH_TXBUFNB*ETH_TX_BUF_SIZE);
-//	if(Ether_Tx_Buff == NULL){}
-//		
-//	Ether_Rx_Buff = stSramMalloc(&HeapStruct_SRAM1, ETH_TXBUFNB*ETH_TX_BUF_SIZE);
-//	if(Ether_Rx_Buff == NULL){}
-		
 	tcpip_init(NULL,NULL);
 	
 	ip_default(&EmbeverStruct);

@@ -319,8 +319,8 @@
               </OCR_RVCT5>
               <OCR_RVCT6>
                 <Type>0</Type>
-                <StartAddress>0x68000000</StartAddress>
-                <Size>0x10000</Size>
+                <StartAddress>0x0</StartAddress>
+                <Size>0x0</Size>
               </OCR_RVCT6>
               <OCR_RVCT7>
                 <Type>0</Type>
@@ -821,11 +821,6 @@
               <FileType>1</FileType>
               <FilePath>..\RTOS_Task\dhcp_task.c</FilePath>
             </File>
-            <File>
-              <FileName>sram_task.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\RTOS_Task\sram_task.c</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>
@@ -840,16 +835,6 @@
               <FileName>stm32f4xx_uart_bsp.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Peripheral_BSP\stm32f4xx_uart_bsp.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f4xx_fsmc_bsp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Peripheral_BSP\stm32f4xx_fsmc_bsp.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f4xx_heap_bsp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Peripheral_BSP\stm32f4xx_heap_bsp.c</FilePath>
             </File>
           </Files>
         </Group>

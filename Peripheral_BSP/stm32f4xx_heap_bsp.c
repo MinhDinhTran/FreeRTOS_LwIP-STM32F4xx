@@ -86,7 +86,7 @@ void *stSramMalloc(Heap_TypeDef *p, u32 xWantedSize )
 	if(xWantedSize)
 	{
 		pvReturn = p->heap_current;	
-	  offset = xWantedSize%ALIGNMENT_SIZE;
+	  offset = xWantedSize%ALIGNMENT_SIZE;		
 #ifdef HEAP_DEBUG
     printf("offset:%d\r\n",offset);
 #endif

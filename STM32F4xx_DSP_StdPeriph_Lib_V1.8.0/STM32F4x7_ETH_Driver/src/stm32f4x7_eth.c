@@ -66,7 +66,7 @@
 #if defined   (__CC_ARM) /*!< ARM Compiler */
 __align(4) 
 ETH_DMADESCTypeDef  DMARxDscrTab[ETH_RXBUFNB];/* Ethernet Rx MA Descriptor */
-__align(4)
+__align(4) 
 ETH_DMADESCTypeDef  DMATxDscrTab[ETH_TXBUFNB];/* Ethernet Tx DMA Descriptor */
 __align(4) 
 //uint8_t Rx_Buff[ETH_RXBUFNB][ETH_RX_BUF_SIZE]; /* Ethernet Receive Buffer */

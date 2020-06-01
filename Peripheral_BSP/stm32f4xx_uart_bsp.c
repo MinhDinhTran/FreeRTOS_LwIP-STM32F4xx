@@ -33,15 +33,12 @@ xSemaphoreHandle Semaphore_uart_dma = NULL;
 #endif
 
 /* Transmit buffer size */
-//uint8_t RxBuffer0[UART_RX_BUFFER_SIZE] = {0};
-//uint8_t RxBuffer1[UART_RX_BUFFER_SIZE] = {0};
+uint8_t RxBuffer0[UART_RX_BUFFER_SIZE] = {0};
+uint8_t RxBuffer1[UART_RX_BUFFER_SIZE] = {0};
 
-//uint8_t TxBuffer[UART_TX_BUFFER_SIZE];
+uint8_t TxBuffer[UART_TX_BUFFER_SIZE];
 
-uint8_t *RxBuffer0;
-uint8_t *RxBuffer1;
 
-uint8_t *TxBuffer;
 
 struct __FILE { 
 	int handle; 
@@ -182,13 +179,6 @@ void USART_Config(uint32 boundrate, uint16 StopBits, uint16 Parity, uint16 Hardw
 	USART_DMACmd(USART1, USART_DMAReq_Tx, ENABLE);
 
 }
-
-void UART_Init_115200(void)
-{
-	USART_Pins();
-	USART_Config(UART_BAUDRATE, UART_STOPBITS, UART_PARITY, UART_FLOWCONTROL);
-}
-
 
 void UART_Init(uint32 boundrate, uint16 StopBits, uint16 Parity, uint16 HardwareFlowControl)
 {

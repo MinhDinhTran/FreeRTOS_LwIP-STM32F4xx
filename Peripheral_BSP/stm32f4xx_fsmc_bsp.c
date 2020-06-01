@@ -157,6 +157,8 @@ static void FSMC_SRAM_Config(void)
 	FSMC_NORSRAMInitTypeDef  FSMC_NORSRAMInitStructure;
   FSMC_NORSRAMTimingInitTypeDef  FSMC_NORSRAMTimingInitStructure;	
 	
+	RCC_AHB3PeriphClockCmd(RCC_AHB3Periph_FSMC,ENABLE);
+	
 	/*Read and write operations use one Timing configuration, because the setup time same.*/
 	FSMC_NORSRAMTimingInitStructure.FSMC_AccessMode =  FSMC_AccessMode_A;
 	FSMC_NORSRAMTimingInitStructure.FSMC_AddressHoldTime = 0x00;

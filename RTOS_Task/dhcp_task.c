@@ -37,7 +37,7 @@ void LwipDHCP_Task(void)
 			}
 				break;
       case DHCP_WAIT_ADDRESS:
-      {
+      {				
 				IPaddress = xnetif_dhcp.offered_ip_addr.addr;
 				SNmark = xnetif_dhcp.offered_sn_mask.addr;
 				GWaddress = xnetif_dhcp.offered_gw_addr.addr;

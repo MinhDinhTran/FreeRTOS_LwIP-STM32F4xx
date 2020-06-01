@@ -16,10 +16,7 @@
 
 TaskHandle_t Main_Task_Handle = NULL;/*Main Task Handle*/
 
-//uint8_t ucHeap[ configTOTAL_HEAP_SIZE ] __attribute__((at(0x68000000)));
-
 EmbeverConfig_TypeDef EmbeverStruct;
-Heap_TypeDef HeapStruct_SRAM1;
 
 static void Device_SetDefault(void)
 {
@@ -33,10 +30,6 @@ static void Device_SetDefault(void)
 void Main_Task(void)
 {
 	BaseType_t xReturn = pdPASS;
-	
-	SRAM_Initilization();
-	
-	stSramInit(&HeapStruct_SRAM1, STM32F4XX_eSRAM_START, STM32F4XX_eSRAM_SIZE);
 
 	Device_SetDefault();
 	
@@ -50,18 +43,6 @@ void Main_Task(void)
 	
 	taskENTER_CRITICAL();
 	
-	if(EmbeverStruct.dhcp_enable == ENABLE)
-	{
-		xReturn	= xTaskCreate((TaskFunction_t) LwipDHCP_Task,
-													(const char *)  "LwipDHCP_Task",		/*lint !e971 Unqualified char types are allowed for strings and single characters only. */
-													(configSTACK_DEPTH_TYPE) LwipDHCP_Task_STACK_SIZE,
-													(void * ) NULL,
-													(UBaseType_t) LwipDHCP_Task_PRIORITY,
-													(TaskHandle_t *) &LwipDHCP_Task_Handle);
-		if(pdPASS == xReturn){}
-		else{printf("LwipDHCP_Task fail!\r\n");}
-	}
-	
 	xReturn = xTaskCreate((TaskFunction_t)SegmentProcess_Task,
 						(const char*)"SegmentProcess_Task",
 						(uint32_t)SegmentProcess_Task_STACK_SIZE,
@@ -69,7 +50,7 @@ void Main_Task(void)
 						(UBaseType_t)SegmentProcess_Task_PRIORITY,
 						(TaskHandle_t*)&SegmentProcess_Task_Handle);
 	if(pdPASS == xReturn){}
-	else{printf("SegmentProcess_Task fail!\r\n");}
+	else{}
 		
 	xReturn = xTaskCreate((TaskFunction_t)UART1_Receive_Task,
 						(const char*)"UART1_Receive_Task",
@@ -78,8 +59,22 @@ void Main_Task(void)
 						(UBaseType_t)UART1_Receive_Task_PRIORITY,
 						(TaskHandle_t*)&UART1_Receive_Task_Handle);
 	if(pdPASS == xReturn){}
-	else{printf("UART1_Receive_Task fail!\r\n");}	
-	
+	else{}
+
+	if(EmbeverStruct.dhcp_enable == ENABLE)
+	{
+		xReturn	= xTaskCreate((TaskFunction_t) LwipDHCP_Task,
+													(const char *)  "LwipDHCP_Task",		/*lint !e971 Unqualified char types are allowed for strings and single characters only. */
+													(configSTACK_DEPTH_TYPE) LwipDHCP_Task_STACK_SIZE,
+													(void * ) NULL,
+													(UBaseType_t) LwipDHCP_Task_PRIORITY,
+													(TaskHandle_t *) &LwipDHCP_Task_Handle);
+		if(pdFAIL == xReturn)
+		{}
+		else
+		{}
+	}
+		
 	taskEXIT_CRITICAL();
 	vTaskDelete(Main_Task_Handle);
   for( ;; ){}

@@ -16,14 +16,10 @@
 #include <string.h>
 
 /* Transmit buffer size */
-//extern uint8_t RxBuffer0[UART_RX_BUFFER_SIZE];
-//extern uint8_t RxBuffer1[UART_RX_BUFFER_SIZE];
+extern uint8_t RxBuffer0[UART_RX_BUFFER_SIZE];
+extern uint8_t RxBuffer1[UART_RX_BUFFER_SIZE];
 
-extern uint8_t *RxBuffer0;
-extern uint8_t *RxBuffer1;
-
-//extern uint8_t TxBuffer[UART_TX_BUFFER_SIZE];
-extern uint8_t *TxBuffer;
+extern uint8_t TxBuffer[UART_TX_BUFFER_SIZE];
 
 static uint8_t *uartToEtherRxBuffer_HeadP = NULL;
 
@@ -47,19 +43,6 @@ TaskHandle_t UART1_Receive_Task_Handle;
 
 void UartParam_Config(void)
 {
-//	RxBuffer0 = stSramMalloc(&HeapStruct_SRAM1, UART_RX_BUFFER_SIZE);
-//	RxBuffer1 = stSramMalloc(&HeapStruct_SRAM1, UART_RX_BUFFER_SIZE);
-//	
-//	TxBuffer = stSramMalloc(&HeapStruct_SRAM1, UART_RX_BUFFER_SIZE);
-	
-	RxBuffer0 = pvPortMalloc(UART_RX_BUFFER_SIZE);
-	if(RxBuffer0 == NULL){}
-	RxBuffer1 = pvPortMalloc(UART_RX_BUFFER_SIZE);
-	if(RxBuffer1 == NULL){}
-	
-	TxBuffer = pvPortMalloc(UART_RX_BUFFER_SIZE);
-	if(TxBuffer == NULL){}
-		
 	EmbeverStruct.uartdev.BaudRate = UART_BAUDRATE;
 	EmbeverStruct.uartdev.StopBits = UART_STOPBITS;
 	EmbeverStruct.uartdev.Parity = UART_PARITY;
@@ -146,9 +129,6 @@ void UartRxBufferPointer_Init(void)
 {	
 	uartToEtherRxBuffer_HeadP = pvPortMalloc(UART_ETHER_BUFFER_SIZE);
 	if(uartToEtherRxBuffer_HeadP == NULL){}
-		
-//	uartToEtherRxBuffer_HeadP = stSramMalloc(&HeapStruct_SRAM1, UART_ETHER_BUFFER_SIZE);
-//	if(uartToEtherRxBuffer_HeadP == NULL){}
 		
 	RxdBufferStructure.readwriteLock = RESET;
 	

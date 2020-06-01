@@ -34,7 +34,7 @@ static void ETH_MACDMA_Config(void);
   * @retval None
   */
 void ETH_BSP_Config(void)
-{	
+{
   /* Configure the GPIO ports for ethernet pins */
   ETH_GPIO_Config();
 	

@@ -36,6 +36,7 @@ int main(void)
 {
 	BaseType_t xReturn = pdPASS;
 	
+//	SysTick_CLKSourceConfig(SysTick_CLKSource_HCLK);
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4);	
 	
 	xReturn = xTaskCreate((TaskFunction_t)Main_Task,

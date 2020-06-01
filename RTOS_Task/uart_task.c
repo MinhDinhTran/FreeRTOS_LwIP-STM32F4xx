@@ -47,15 +47,15 @@ TaskHandle_t UART1_Receive_Task_Handle;
 
 void UartParam_Config(void)
 {
-	RxBuffer0 = stSramMalloc(&HeapStruct_SRAM1, UART_RX_BUFFER_SIZE);
-	RxBuffer1 = stSramMalloc(&HeapStruct_SRAM1, UART_RX_BUFFER_SIZE);
+//	RxBuffer0 = stSramMalloc(&HeapStruct_SRAM1, UART_RX_BUFFER_SIZE);
+//	RxBuffer1 = stSramMalloc(&HeapStruct_SRAM1, UART_RX_BUFFER_SIZE);
+//	
+//	TxBuffer = stSramMalloc(&HeapStruct_SRAM1, UART_RX_BUFFER_SIZE);
 	
-	TxBuffer = stSramMalloc(&HeapStruct_SRAM1, UART_RX_BUFFER_SIZE);
-	
-//	RxBuffer0 = pvPortMalloc(UART_RX_BUFFER_SIZE);
-//	if(RxBuffer0 == NULL){}
-//	RxBuffer1 = pvPortMalloc(UART_RX_BUFFER_SIZE);
-//	if(RxBuffer1 == NULL){}
+	RxBuffer0 = pvPortMalloc(UART_RX_BUFFER_SIZE);
+	if(RxBuffer0 == NULL){}
+	RxBuffer1 = pvPortMalloc(UART_RX_BUFFER_SIZE);
+	if(RxBuffer1 == NULL){}
 	
 	TxBuffer = pvPortMalloc(UART_RX_BUFFER_SIZE);
 	if(TxBuffer == NULL){}

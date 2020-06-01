@@ -26,11 +26,11 @@ void SerialToEthernet_TCPSever_Task(void *arg)
   err_t err, accept_err, recv_err;
 	static vu8 connect_state = RESET;
 	
-//	etherBuffer = pvPortMalloc(UART_RX_BUFFER_SIZE);
-//	if(etherBuffer == NULL){}
-		
-	etherBuffer = stSramMalloc(&HeapStruct_SRAM1, UART_RX_BUFFER_SIZE);
+	etherBuffer = pvPortMalloc(UART_RX_BUFFER_SIZE);
 	if(etherBuffer == NULL){}
+		
+//	etherBuffer = stSramMalloc(&HeapStruct_SRAM1, UART_RX_BUFFER_SIZE);
+//	if(etherBuffer == NULL){}
 	
   LWIP_UNUSED_ARG(arg);
 	
@@ -151,11 +151,11 @@ void SerialToEthernet_TCPClient_Task(void *arg)
 	static uint16_t server_port;
 	static vu8 connect_state = RESET;
 
-//	etherBuffer = pvPortMalloc(UART_RX_BUFFER_SIZE);
-//	if(etherBuffer == NULL){}
-	
-	etherBuffer = stSramMalloc(&HeapStruct_SRAM1, UART_RX_BUFFER_SIZE);
+	etherBuffer = pvPortMalloc(UART_RX_BUFFER_SIZE);
 	if(etherBuffer == NULL){}
+	
+//	etherBuffer = stSramMalloc(&HeapStruct_SRAM1, UART_RX_BUFFER_SIZE);
+//	if(etherBuffer == NULL){}
 		
 	LWIP_UNUSED_ARG(arg);
 	
@@ -167,8 +167,11 @@ void SerialToEthernet_TCPClient_Task(void *arg)
 		while(connect_state != SET)
 		{
 			/* Create a new connection identifier. */
-      if(connect_state == RESET) conn = netconn_new(NETCONN_TCP);
+      if(connect_state == RESET) 
+				conn = netconn_new(NETCONN_TCP);
+			
 			connect_err = netconn_connect(conn, &server_ipaddr, server_port);
+			
 			if(connect_err == ERR_OK)
 			{
 				connect_state = SET;

@@ -83,6 +83,7 @@ typedef struct
 	uint16 HardwareFlowControl;
 }__uart_dev;
 
+#pragma pack(4)
 typedef struct
 {
 	__lwip_dev ipdev;
@@ -92,6 +93,7 @@ typedef struct
 	uint8 work_mode;
 	uint8 start_state;
 }EmbeverConfig_TypeDef;
+#pragma pack()
 
 extern EmbeverConfig_TypeDef EmbeverStruct;
 

@@ -222,6 +222,8 @@ typedef struct {
 /** 
   * @brief  ETH DMA Descriptors data structure definition
   */ 
+
+
 typedef struct  {
   __IO uint32_t   Status;                /*!< Status */
   uint32_t   ControlBufferSize;     /*!< Control and Buffer1, Buffer2 lengths */

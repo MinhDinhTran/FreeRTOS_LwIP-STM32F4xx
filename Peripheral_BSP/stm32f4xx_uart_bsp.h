@@ -4,12 +4,12 @@
   * @version V1.0.0
   * @date    09-May-2020
   * @brief   Ethernet low level content initialization
-	*          Enable GPIO, DMA on RMII interface
+    *          Enable GPIO, DMA on RMII interface
   ******************************************************************************
   * @attention
   * This project is for learning only. If it is for commercial use, please contact the author.
-	*
-	*Copyright (c) 2020 Lanceli All rights reserved.
+    *
+    *Copyright (c) 2020 Lanceli All rights reserved.
   ******************************************************************************
   */
 #ifndef __STM32F4XX_UART_BSP_H
@@ -21,12 +21,12 @@
 #ifdef __GNUC__
   /* With GCC/RAISONANCE, small printf (option LD Linker->Libraries->Small printf
      set to 'Yes') calls __io_putchar() */
-  #define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
+#define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
 #else
-  #define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
+#define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
 #endif /* __GNUC__ */
 
-/*USART buffer size*/
+  /*USART buffer size*/
 #define UART_RX_BUFFER_SIZE	1024
 #define UART_TX_BUFFER_SIZE	1024
 

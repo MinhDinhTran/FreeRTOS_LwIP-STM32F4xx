@@ -33,20 +33,20 @@ xSemaphoreHandle Semaphore_uart_dma = NULL;
 #endif
 
 /* Transmit buffer size */
-uint8_t RxBuffer0[UART_RX_BUFFER_SIZE] = {0};
-uint8_t RxBuffer1[UART_RX_BUFFER_SIZE] = {0};
+//uint8_t RxBuffer0[UART_RX_BUFFER_SIZE] = {0};
+//uint8_t RxBuffer1[UART_RX_BUFFER_SIZE] = {0};
 
-uint8_t TxBuffer[UART_TX_BUFFER_SIZE];
+//uint8_t TxBuffer[UART_TX_BUFFER_SIZE];
+uint8_t *RxBuffer0;
+uint8_t *RxBuffer1;
 
-
+uint8_t *TxBuffer;
 
 struct __FILE { 
 	int handle; 
 }; 
 FILE __stdout;    
 void _sys_exit(int x) {	x = x;}
-
-
 
 static void USART_Pins(void)
 {

@@ -26,8 +26,10 @@ void SerialToEthernet_TCPSever_Task(void *arg)
   err_t err, accept_err, recv_err;
 	static vu8 connect_state = RESET;
 	
-	etherBuffer = pvPortMalloc(UART_RX_BUFFER_SIZE);
-	if(etherBuffer == NULL){}
+//	etherBuffer = pvPortMalloc(UART_RX_BUFFER_SIZE);
+//	if(etherBuffer == NULL){}
+	
+	etherBuffer = stSramMalloc(&HeapStruct_SRAM1, UART_RX_BUFFER_SIZE);
 	
   LWIP_UNUSED_ARG(arg);
 	
@@ -148,8 +150,10 @@ void SerialToEthernet_TCPClient_Task(void *arg)
 	static uint16_t server_port;
 	static vu8 connect_state = RESET;
 
-	etherBuffer = pvPortMalloc(UART_RX_BUFFER_SIZE);
-	if(etherBuffer == NULL){}
+//	etherBuffer = pvPortMalloc(UART_RX_BUFFER_SIZE);
+//	if(etherBuffer == NULL){}
+	
+	etherBuffer = stSramMalloc(&HeapStruct_SRAM1, UART_RX_BUFFER_SIZE);
 	
 	LWIP_UNUSED_ARG(arg);
 	

@@ -10,9 +10,22 @@
 	* Copyright (c) 2020 Lanceli All rights reserved.
   ******************************************************************************
   */
-  
+ 
 #include "main.h"
 
+
+void TIM2_Init_10us(void)
+{
+	TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
+	
+	TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
+	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
+	TIM_TimeBaseStructure.TIM_Period = 10-1;
+	TIM_TimeBaseStructure.TIM_Prescaler = 42-1;
+	
+	TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStructure);
+
+}
 
 void DHT22_Init(void)
 {
@@ -36,9 +49,10 @@ u16 DHT22_ReadTemperature(void)
 	
 	GPIO_DHT22_OUT = RESET;
 	
+	GPIO_DHT22_OUT = SET;
+	
 	return revale;
 }
-
 
 u16 DHT22_ReadHumidity(void)
 {

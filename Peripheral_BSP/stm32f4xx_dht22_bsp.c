@@ -14,17 +14,35 @@
 #include "main.h"
 
 
-void TIM2_Init_10us(void)
+
+void TIM2_Init_us(u16 period)
 {
 	TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
+	NVIC_InitTypeDef NVIC_InitStructure;
+	
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
 	
 	TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
 	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
-	TIM_TimeBaseStructure.TIM_Period = 10-1;
+	TIM_TimeBaseStructure.TIM_Period = period-1;
 	TIM_TimeBaseStructure.TIM_Prescaler = 42-1;
 	
 	TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStructure);
+	
+	TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE);
+	
+	TIM_Cmd(TIM2,DISABLE);
+	
+	NVIC_InitStructure.NVIC_IRQChannel = TIM2_IRQn;
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = TIM2_IRQnPriority;
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+	NVIC_Init(&NVIC_InitStructure);
+}
 
+void TIM2_IRQ(void)
+{
+	 
 }
 
 void DHT22_Init(void)
@@ -43,25 +61,7 @@ void DHT22_Init(void)
 	GPIO_DHT22_OUT = SET;/*set the pin level high*/
 }
 
-u16 DHT22_ReadTemperature(void)
-{
-	u16 revale;
-	
-	GPIO_DHT22_OUT = RESET;
-	
-	GPIO_DHT22_OUT = SET;
-	
-	return revale;
-}
-
-u16 DHT22_ReadHumidity(void)
-{
-	u16 revale;
-	
-	return revale;
-}
-
-u8 DTH22_ReadOneFrame(u16 temp, u16 humi)
+u8 DTH22_ReadOnebit(void)
 {
 	
 }

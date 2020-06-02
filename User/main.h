@@ -41,7 +41,6 @@
 #include "uart_task.h"
 #include "segment_task.h"
 
-
 #include "stm32f4xx.h"
 #include "stm32f4x7_eth.h"
 #include "stm32f4xx_eth_bsp.h"
@@ -105,6 +104,7 @@
 
 #define Delay(nCount)	vTaskDelay(nCount)
 
+#define TIM2_IRQnPriority                 6
 #define USART1_IRQnPriority								7
 #define DMA2_Stream5_IRQnPriority					8
 #define ETH_IRQnPriority									13

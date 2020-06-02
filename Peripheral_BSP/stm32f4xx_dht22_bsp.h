@@ -18,6 +18,8 @@
 extern "C" {
 #endif
 
+#include "stm32f4xx.h"
+	
 /**set the PC10 as the data BUS**/
 #define RCC_AHB1Periph_DHT22  RCC_AHB1Periph_GPIOC	
 #define	GPIO_DHT22						GPIOC
@@ -26,7 +28,10 @@ extern "C" {
 #define GPIO_DHT22_OUT        PCout(10)
 #define GPIO_DHT22_IN         PCin(10)
 	
-
+#define timer2_period_10us  10
+	
+extern void TIM2_Init_us(u16 period);
+extern void TIM2_IRQ(void);
 	
 #ifdef __cplusplus
 }

@@ -180,6 +180,12 @@ void USART_Config(uint32 boundrate, uint16 StopBits, uint16 Parity, uint16 Hardw
 
 }
 
+void UART_Init_115200(void)
+{
+	USART_Pins();
+	USART_Config(UART_BAUDRATE, UART_STOPBITS, UART_PARITY, UART_FLOWCONTROL);
+}
+
 void UART_Init(uint32 boundrate, uint16 StopBits, uint16 Parity, uint16 HardwareFlowControl)
 {
 	USART_Pins();

@@ -204,15 +204,6 @@ void DMA2_Stream5_IRQHandler(void)
 #endif
 
 
-void TIM2_IRQHandler(void)
-{
-	if(TIM_GetITStatus(TIM2, TIM_IT_Update)==SET)
-	{
-		TIM_ClearITPendingBit(TIM2, TIM_IT_Update); 
-		TIM2_IRQ();
-	}	
-}
-
 /**
   * @brief  This function handles PPP interrupt request.
   * @param  None

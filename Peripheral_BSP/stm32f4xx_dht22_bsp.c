@@ -13,38 +13,6 @@
  
 #include "main.h"
 
-static u32 Timer_10us = 0;
-
-void TIM2_Init_us(u16 period)
-{
-	TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
-	NVIC_InitTypeDef NVIC_InitStructure;
-	
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
-	
-	TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
-	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
-	TIM_TimeBaseStructure.TIM_Period = period-1;
-	TIM_TimeBaseStructure.TIM_Prescaler = 42-1;
-	
-	TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStructure);
-	
-	TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE);
-	
-	NVIC_InitStructure.NVIC_IRQChannel = TIM2_IRQn;
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = TIM2_IRQnPriority;
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
-	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-	NVIC_Init(&NVIC_InitStructure);
-	
-	TIM_Cmd(TIM2,ENABLE);
-}
-
-void TIM2_IRQ(void)
-{
-	if(Timer_10us) Timer_10us--;
-}
-
 void DHT22_Init(void)
 {
 	GPIO_InitTypeDef GPIO_InitStructure;
@@ -59,41 +27,61 @@ void DHT22_Init(void)
 	GPIO_Init(GPIO_DHT22, &GPIO_InitStructure);
 	
 	GPIO_DHT22_OUT = SET;/*set the pin level high*/
-	
-	TIM2_Init_us(timer2_period_10us);
 }
 
 static u8 DHT22_Start(void)
 {
+	u8 count;
+	
+	DHT22_OUT();
+	
 	GPIO_DHT22_OUT = RESET;
-	Timer_10us = 55;
-	while(Timer_10us);
+	Delay_us(550);
 	GPIO_DHT22_OUT = SET;
-	Timer_10us = 4;
-	while(Timer_10us);
+	Delay_us(30);
 	
-	Timer_10us = 10;
-	while((!GPIO_DHT22_IN) && Timer_10us);	
-	if(!Timer_10us) return RESET;
+  DHT22_IN();
 	
-	Timer_10us = 10;
-	while(GPIO_DHT22_IN && Timer_10us);	
-	if(!Timer_10us) return RESET;
+	count = 100;
+	while(!GPIO_DHT22_IN)
+	{
+		count--;
+		Delay_us(1);
+	}
+	if(!count) return RESET;
+	
+	count = 100;
+	while(GPIO_DHT22_IN)
+	{
+		count--;
+		Delay_us(1);
+	}
+	if(!count) return RESET;
 	
 	return SET;
 }
 
 static u8 DTH22_GetOnebit(void)
 {
-	u8 revale;
+	u8 revale = 0;
+	u8 count;
 	
-	Timer_10us = 10;
-	while(!GPIO_DHT22_IN && Timer_10us);
-	if(!Timer_10us) return RESET;
+	count = 100;
+	/*wait for high level*/
+	while((!GPIO_DHT22_IN) && count)
+	{
+		count--;
+		Delay_us(1);
+	}
 	
-	Timer_10us = 4;
-	while(GPIO_DHT22_IN && Timer_10us);
-	if(Timer_10us) revale = 0;
+	count = 40;
+	while(GPIO_DHT22_IN && count)
+	{
+		count--;
+		Delay_us(1);
+	}
+	
+	if(count) revale = 0;
 	else revale = 1;
 	
 	return revale;

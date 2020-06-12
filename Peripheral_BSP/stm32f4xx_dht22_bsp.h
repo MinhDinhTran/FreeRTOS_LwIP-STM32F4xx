@@ -20,6 +20,9 @@ extern "C" {
 
 #include "stm32f4xx.h"
 	
+#define DHT22_IN()  {GPIOC->MODER&=~(3<<(10*2));GPIOC->MODER|=0<<10*2; GPIOC->OTYPER |= 1<<10;}
+#define DHT22_OUT() {GPIOC->MODER&=~(3<<(10*2));GPIOC->MODER|=1<<10*2; GPIOC->OTYPER |= 0<<10;}
+	
 /**set the PC10 as the data BUS**/
 #define RCC_AHB1Periph_DHT22  RCC_AHB1Periph_GPIOC	
 #define	GPIO_DHT22						GPIOC
@@ -31,8 +34,7 @@ extern "C" {
 #define timer2_period_10us  10
 	
 extern void TIM2_Init_us(u16 period);
-extern void TIM2_IRQ(void);
-	
+
 #ifdef __cplusplus
 }
 #endif

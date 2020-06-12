@@ -38,7 +38,7 @@ STM32F405/407
    |  |__stm32f4xx_it.c
    |  |__main.h
    |  |__FreeRTOSConfig.h
-   |  |__w5500_config.h
+   |  
    |
    |__RTOS_Task
    |  |__main_task.c

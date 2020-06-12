@@ -34,8 +34,6 @@
 #include "timers.h"
 #include "semphr.h"
 
-#include "delay.h"
-
 #include "main_task.h"
 #include "netif_config.h"
 #include "tcp_task.h"
@@ -106,6 +104,7 @@
 
 #define Delay(nCount)	vTaskDelay(nCount)
 
+#define TIM2_IRQnPriority                 6
 #define USART1_IRQnPriority								7
 #define DMA2_Stream5_IRQnPriority					8
 #define ETH_IRQnPriority									13

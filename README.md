@@ -21,3 +21,35 @@
 
 <P>This EVB use MCU of STM32F407ZGT6.  It has 1 Mbyte of Flash memory, 192+4 Kbyte of SRAM. In addition to the network port of RMII, EVB also left other IO ports, including UART, SPI, IIC.</P>
 <p>In addition to the above interface, the EVB add FSMC for NAND Flash and SRAM. It can be run larger content or complex algorithm. I designed it mainly for building FTP Server later.</p>
+
+<h4>代码框架|code tree</h4>
+<PRE>
+STM32F405/407
+   |__CMSIS
+   |  |__system_stm32f4xx.c [STM32内核配置文件]
+   |  |__startup_stm32f40_41xxx.c [STM32F4 启动文件]
+   |
+   |__STM32F4xx_StdPeriph_Dirver
+   |
+   |__FreeRTOS
+   |
+   |__User
+   |  |__main.c
+   |  |__stm32f4xx_it.c
+   |  |__main.h
+   |  |__FreeRTOSConfig.h
+   |  |__w5500_config.h
+   |
+   |__RTOS_Task
+   |  |__main_task.c
+   |  |__uart_task.c
+   |  |__spi_task.c
+   |  |__segment_task.c
+   |
+   |__Peripheral_BSP
+   |  |__stm32f4xx_uart_bsp.c
+   |  |__stm32f4xx_heap_bsp.c
+   |  |__stm32f4xx_fsmc_bsp.c
+   |  |__stm32f4xx_spi_bsp.c
+
+</PRE>

@@ -33,20 +33,20 @@ xSemaphoreHandle Semaphore_uart_dma = NULL;
 #endif
 
 /* Transmit buffer size */
-uint8_t RxBuffer0[UART_RX_BUFFER_SIZE] = {0};
-uint8_t RxBuffer1[UART_RX_BUFFER_SIZE] = {0};
+//uint8_t RxBuffer0[UART_RX_BUFFER_SIZE] = {0};
+//uint8_t RxBuffer1[UART_RX_BUFFER_SIZE] = {0};
 
-uint8_t TxBuffer[UART_TX_BUFFER_SIZE];
+//uint8_t TxBuffer[UART_TX_BUFFER_SIZE];
+uint8_t *RxBuffer0;
+uint8_t *RxBuffer1;
 
-
+uint8_t *TxBuffer;
 
 struct __FILE { 
 	int handle; 
 }; 
 FILE __stdout;    
 void _sys_exit(int x) {	x = x;}
-
-
 
 static void USART_Pins(void)
 {
@@ -111,7 +111,7 @@ static void DMA_UART_NVIC(void)
   * @param  None
   * @retval None
   */
-void USART_Config(uint32 boundrate, uint16 StopBits, uint16 Parity, uint16 HardwareFlowControl)
+void USART_Config(uint32 boundrate, uint16 WordLength, uint16 StopBits, uint16 Parity, uint16 HardwareFlowControl)
 {		
   USART_InitTypeDef USART_InitStructure;
 	DMA_InitTypeDef  DMA_InitStructure;
@@ -129,7 +129,7 @@ void USART_Config(uint32 boundrate, uint16 StopBits, uint16 Parity, uint16 Hardw
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_DMA2, ENABLE);
 	
   USART_InitStructure.USART_BaudRate = boundrate;
-  USART_InitStructure.USART_WordLength = USART_WordLength_8b;
+  USART_InitStructure.USART_WordLength = WordLength;
   USART_InitStructure.USART_StopBits = StopBits;
   USART_InitStructure.USART_Parity = Parity;
   USART_InitStructure.USART_HardwareFlowControl = HardwareFlowControl;
@@ -180,7 +180,27 @@ void USART_Config(uint32 boundrate, uint16 StopBits, uint16 Parity, uint16 Hardw
 
 }
 
-void UART_Init(uint32 boundrate, uint16 StopBits, uint16 Parity, uint16 HardwareFlowControl)
+void UART_Init_115200(void)
+{
+	USART_InitTypeDef USART_InitStructure;
+	
+	USART_Pins();
+//	USART_Config(UART_BAUDRATE, UART_WORDLENGTH, UART_STOPBITS, UART_PARITY, UART_FLOWCONTROL);
+	
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1,ENABLE);
+	
+  USART_InitStructure.USART_BaudRate = UART_BAUDRATE;
+  USART_InitStructure.USART_WordLength = UART_WORDLENGTH;
+  USART_InitStructure.USART_StopBits = UART_STOPBITS;
+  USART_InitStructure.USART_Parity = UART_PARITY;
+  USART_InitStructure.USART_HardwareFlowControl = UART_FLOWCONTROL;
+  USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
+	USART_Init(USART1, &USART_InitStructure);	
+	
+	USART_Cmd(USART1, ENABLE);
+}
+
+void UART_Init(uint32 boundrate, uint16 WordLength, uint16 StopBits, uint16 Parity, uint16 HardwareFlowControl)
 {
 	USART_Pins();
   /* USARTx configuration ----------------------------------------------------*/
@@ -206,7 +226,7 @@ void UART_Init(uint32 boundrate, uint16 StopBits, uint16 Parity, uint16 Hardware
         - Hardware flow control disabled (RTS and CTS signals)
         - Receive and transmit enabled
   */ 
-	USART_Config(boundrate, StopBits, Parity, HardwareFlowControl);
+	USART_Config(boundrate, WordLength, StopBits, Parity, HardwareFlowControl);
 #ifdef	UART_IT
 
 	USART_NVIC();	

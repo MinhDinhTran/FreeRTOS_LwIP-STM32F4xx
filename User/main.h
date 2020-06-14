@@ -34,6 +34,8 @@
 #include "timers.h"
 #include "semphr.h"
 
+#include "delay.h"
+
 #include "main_task.h"
 #include "netif_config.h"
 #include "tcp_task.h"
@@ -41,11 +43,13 @@
 #include "uart_task.h"
 #include "segment_task.h"
 
-
 #include "stm32f4xx.h"
 #include "stm32f4x7_eth.h"
 #include "stm32f4xx_eth_bsp.h"
 #include "stm32f4xx_uart_bsp.h"
+#include "stm32f4xx_fsmc_bsp.h"
+#include "stm32f4xx_heap_bsp.h"
+#include "stm32f4xx_dht22_bsp.h"
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
@@ -109,7 +113,8 @@
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
 
-
+/*Debug Message*/
+#define HEAP_DEBUG
 #endif /* __MAIN_H */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

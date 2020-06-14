@@ -16,6 +16,9 @@
 
 TaskHandle_t Main_Task_Handle = NULL;/*Main Task Handle*/
 
+EmbeverConfig_TypeDef EmbeverStruct;
+Heap_TypeDef HeapStruct_SRAM1;
+
 static void Device_SetDefault(void)
 {
 	UartParam_Config();
@@ -28,14 +31,20 @@ static void Device_SetDefault(void)
 void Main_Task(void)
 {
 	BaseType_t xReturn = pdPASS;
+	
+//	DelayTimer_Init(TIM2_Period);
 
+	SRAM_Initilization();
+//	stSramInit(&HeapStruct_SRAM1, STM32F4XX_eSRAM_START, STM32F4XX_eSRAM_SIZE);
+	stSramInit(&HeapStruct_SRAM1, STM32F4XX_SRAM1_START, STM32F4XX_SRAM1_SIZE);
+	
 	Device_SetDefault();
 	
 	UartRxBufferPointer_Init();
 	
-	UART_Init(EmbeverStruct.uartdev.BaudRate, EmbeverStruct.uartdev.StopBits, EmbeverStruct.uartdev.Parity, EmbeverStruct.uartdev.HardwareFlowControl);
+	UART_Init(EmbeverStruct.uartdev.BaudRate, EmbeverStruct.uartdev.WordLength,  EmbeverStruct.uartdev.StopBits, EmbeverStruct.uartdev.Parity, EmbeverStruct.uartdev.HardwareFlowControl);
 
-	ETH_BSP_Config();		
+	ETH_BSP_Config();
 
 	LwIP_Init();
 	
@@ -48,7 +57,7 @@ void Main_Task(void)
 						(UBaseType_t)SegmentProcess_Task_PRIORITY,
 						(TaskHandle_t*)&SegmentProcess_Task_Handle);
 	if(pdPASS == xReturn){}
-	else{}
+	else{printf("SegmentProcess_Task fail!\r\n");}
 		
 	xReturn = xTaskCreate((TaskFunction_t)UART1_Receive_Task,
 						(const char*)"UART1_Receive_Task",
@@ -57,7 +66,7 @@ void Main_Task(void)
 						(UBaseType_t)UART1_Receive_Task_PRIORITY,
 						(TaskHandle_t*)&UART1_Receive_Task_Handle);
 	if(pdPASS == xReturn){}
-	else{}
+	else{printf("UART1_Receive_Task fail!\r\n");}
 
 	if(EmbeverStruct.dhcp_enable == ENABLE)
 	{
@@ -67,10 +76,8 @@ void Main_Task(void)
 													(void * ) NULL,
 													(UBaseType_t) LwipDHCP_Task_PRIORITY,
 													(TaskHandle_t *) &LwipDHCP_Task_Handle);
-		if(pdFAIL == xReturn)
-		{}
-		else
-		{}
+		if(pdPASS == xReturn){}
+		else{printf("LwipDHCP_Task fail!\r\n");}
 	}
 		
 	taskEXIT_CRITICAL();

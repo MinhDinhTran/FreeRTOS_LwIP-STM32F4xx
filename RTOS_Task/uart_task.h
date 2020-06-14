@@ -5,6 +5,7 @@
 #include "task.h"
 
 #define UART_BAUDRATE 115200
+#define UART_WORDLENGTH USART_WordLength_8b
 #define UART_STOPBITS USART_StopBits_1
 #define UART_PARITY USART_Parity_No
 #define UART_FLOWCONTROL USART_HardwareFlowControl_None

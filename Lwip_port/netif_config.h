@@ -78,6 +78,7 @@ typedef struct
 typedef struct  
 {
 	uint32 BaudRate;
+	uint16 WordLength;
 	uint16 StopBits;
 	uint16 Parity;
 	uint16 HardwareFlowControl;

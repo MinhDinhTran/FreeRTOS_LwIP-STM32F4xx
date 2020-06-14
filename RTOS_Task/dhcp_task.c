@@ -46,7 +46,7 @@ void LwipDHCP_Task(void)
         {
           DHCP_state = DHCP_ADDRESS_ASSIGNED;
           /* Stop DHCP */
-          dhcp_stop(&xnetif);				
+          dhcp_stop(&xnetif);
 					
 					EmbeverStruct.ipdev.localip[3]=(uint8_t)(IPaddress>>24); 
 					EmbeverStruct.ipdev.localip[2]=(uint8_t)(IPaddress>>16);

@@ -40,6 +40,10 @@ extern ETH_DMA_Rx_Frame_infos *DMA_RX_FRAME_infos;
 extern ETH_DMADESCTypeDef  *DMATxDescToSet;
 extern ETH_DMADESCTypeDef  *DMARxDescToGet;
 /* Ethernet Rx & Tx DMA Descriptors */
+
+//extern ETH_DMADESCTypeDef  DMARxDscrTab[ETH_RXBUFNB];/* Ethernet Rx MA Descriptor */
+//extern ETH_DMADESCTypeDef  DMATxDscrTab[ETH_TXBUFNB];/* Ethernet Tx DMA Descriptor */
+
 ETH_DMADESCTypeDef  *DMARxDscrTab;
 ETH_DMADESCTypeDef  *DMATxDscrTab;
 static err_t ethernetif_init(struct netif *netif);
@@ -92,16 +96,17 @@ void LwIP_Init(void)
   struct ip4_addr netmask;
   struct ip4_addr gw;
 	
-//	Ether_Tx_Buff = pvPortMalloc(ETH_TXBUFNB*ETH_TX_BUF_SIZE);
-//	if(Ether_Tx_Buff == NULL){}
-//	Ether_Rx_Buff = pvPortMalloc(ETH_TXBUFNB*ETH_TX_BUF_SIZE);
-//	if(Ether_Rx_Buff == NULL){}
+	Ether_Tx_Buff = pvPortMalloc(ETH_TXBUFNB*ETH_TX_BUF_SIZE);
+	Ether_Rx_Buff = pvPortMalloc(ETH_TXBUFNB*ETH_TX_BUF_SIZE);
 		
-	Ether_Tx_Buff = stSramMalloc(&HeapStruct_SRAM1, ETH_TXBUFNB*ETH_TX_BUF_SIZE);			
-	Ether_Rx_Buff = stSramMalloc(&HeapStruct_SRAM1, ETH_TXBUFNB*ETH_TX_BUF_SIZE);
+//	Ether_Tx_Buff = stSramMalloc(&HeapStruct_SRAM1, ETH_TXBUFNB*ETH_TX_BUF_SIZE);			
+//	Ether_Rx_Buff = stSramMalloc(&HeapStruct_SRAM1, ETH_TXBUFNB*ETH_TX_BUF_SIZE);
 	
-	DMARxDscrTab = stSramMalloc(&HeapStruct_SRAM1, ETH_TXBUFNB*sizeof(ETH_DMADESCTypeDef));			
-	DMATxDscrTab = stSramMalloc(&HeapStruct_SRAM1, ETH_TXBUFNB*sizeof(ETH_DMADESCTypeDef));
+	DMARxDscrTab = pvPortMalloc( ETH_TXBUFNB*sizeof(ETH_DMADESCTypeDef));
+	DMATxDscrTab = pvPortMalloc( ETH_TXBUFNB*sizeof(ETH_DMADESCTypeDef));
+	
+//	DMARxDscrTab = stSramMalloc(&HeapStruct_SRAM1, ETH_TXBUFNB*sizeof(ETH_DMADESCTypeDef));
+//	DMATxDscrTab = stSramMalloc(&HeapStruct_SRAM1, ETH_TXBUFNB*sizeof(ETH_DMADESCTypeDef));
 	
 	tcpip_init(NULL,NULL);
 	

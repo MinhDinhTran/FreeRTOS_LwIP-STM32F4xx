@@ -41,8 +41,8 @@
 //#define UART_IT_TC
 //#define UART_OverSampling
 
-void USART_Config(uint32 boundrate, uint16 StopBits, uint16 Parity, uint16 HardwareFlowControl);
-extern void UART_Init(uint32 boundrate, uint16 StopBits, uint16 Parity, uint16 HardwareFlowControl);
+void USART_Config(uint32 boundrate, uint16 WordLength, uint16 StopBits, uint16 Parity, uint16 HardwareFlowControl);
+extern void UART_Init(uint32 boundrate, uint16 WordLength, uint16 StopBits, uint16 Parity, uint16 HardwareFlowControl);
 extern void UART_Init_115200(void);
 
 void UartRecv_IDLE_IRQ(void);

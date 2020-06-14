@@ -48,15 +48,15 @@ TaskHandle_t UART1_Receive_Task_Handle;
 
 void UartParam_Config(void)
 {
-//	RxBuffer0 = stSramMalloc(&HeapStruct_SRAM1, UART_RX_BUFFER_SIZE);
-//	RxBuffer1 = stSramMalloc(&HeapStruct_SRAM1, UART_RX_BUFFER_SIZE);
+	RxBuffer0 = stSramMalloc(&HeapStruct_SRAM1, UART_RX_BUFFER_SIZE);
+	RxBuffer1 = stSramMalloc(&HeapStruct_SRAM1, UART_RX_BUFFER_SIZE);
+	
+	TxBuffer = stSramMalloc(&HeapStruct_SRAM1, UART_TX_BUFFER_SIZE);
+	
+//	RxBuffer0 = pvPortMalloc(UART_RX_BUFFER_SIZE);
+//	RxBuffer1 = pvPortMalloc(UART_RX_BUFFER_SIZE);
 //	
-//	TxBuffer = stSramMalloc(&HeapStruct_SRAM1, UART_TX_BUFFER_SIZE);
-	
-	RxBuffer0 = pvPortMalloc(UART_RX_BUFFER_SIZE);
-	RxBuffer1 = pvPortMalloc(UART_RX_BUFFER_SIZE);
-	
-	TxBuffer = pvPortMalloc(UART_TX_BUFFER_SIZE);
+//	TxBuffer = pvPortMalloc(UART_TX_BUFFER_SIZE);
 	
 	EmbeverStruct.uartdev.BaudRate = UART_BAUDRATE;
 	EmbeverStruct.uartdev.WordLength = UART_WORDLENGTH;
@@ -144,12 +144,9 @@ void UartDmaStreamSend(uint8 *buffer, uint16 length)
 void UartRxBufferPointer_Init(void)
 {	
 //	uartToEtherRxBuffer_HeadP = pvPortMalloc(UART_ETHER_BUFFER_SIZE);
-//	if(uartToEtherRxBuffer_HeadP == NULL){}
 		
-//	uartToEtherRxBuffer_HeadP = stSramMalloc(&HeapStruct_SRAM1, UART_ETHER_BUFFER_SIZE);
+	uartToEtherRxBuffer_HeadP = stSramMalloc(&HeapStruct_SRAM1, UART_ETHER_BUFFER_SIZE);
 		
-	uartToEtherRxBuffer_HeadP = pvPortMalloc(UART_ETHER_BUFFER_SIZE);
-	
 	RxdBufferStructure.readwriteLock = RESET;
 	
 	RxdBufferStructure.wirteP = uartToEtherRxBuffer_HeadP;

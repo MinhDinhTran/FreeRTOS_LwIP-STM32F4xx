@@ -31,25 +31,40 @@ STM32F405/407
    |
    |__STM32F4xx_StdPeriph_Dirver
    |
+   |__STM32F4x7_ETH_Driver
+   |  |__stm32f4x7_eth.c
+   |
    |__FreeRTOS
+   |
+   |__Lwip_core
+   |
+   |__Lwip_api
+   |
+   |__Lwip_netif
+   |
+   |__Lwip_app
+   |
+   |__Lwip_port
    |
    |__User
    |  |__main.c
    |  |__stm32f4xx_it.c
    |  |__main.h
    |  |__FreeRTOSConfig.h
-   |  
+   |  |__delay.c
    |
    |__RTOS_Task
    |  |__main_task.c
-   |  |__uart_task.c
-   |  |__spi_task.c
+   |  |__tcp_task.c
+   |  |__uaet_task.c
    |  |__segment_task.c
+   |  |__dhcp_task.c
    |
    |__Peripheral_BSP
-   |  |__stm32f4xx_uart_bsp.c
-   |  |__stm32f4xx_heap_bsp.c
-   |  |__stm32f4xx_fsmc_bsp.c
-   |  |__stm32f4xx_spi_bsp.c
+      |__stm32f4xx_eth_bsp.c
+      |__stm32f4xx_uart_bsp.c
+      |__stm32f4xx_heap_bsp.c
+      |__stm32f4xx_fsmc_bsp.c
+      |__stm32f4xx_dht22_bsp.c
 
 </PRE>

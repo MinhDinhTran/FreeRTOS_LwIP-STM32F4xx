@@ -32,10 +32,10 @@ void Main_Task(void)
 {
 	BaseType_t xReturn = pdPASS;
 	
-//	DelayTimer_Init(TIM2_Period);
+	DelayTimer_Init(TIM2_Period);
 
 	SRAM_Initilization();
-//	stSramInit(&HeapStruct_SRAM1, STM32F4XX_eSRAM_START, STM32F4XX_eSRAM_SIZE);
+
 	stSramInit(&HeapStruct_SRAM1, STM32F4XX_SRAM1_START, STM32F4XX_SRAM1_SIZE);
 	
 	Device_SetDefault();

@@ -114,7 +114,7 @@ void SerialToEthernet_TCPSever_Task(void *arg)
 								printf("readbuffer return reset\r\n");
 							}
 						}
-	  				Delay(10);
+	  				
 						if(Eth_GetLinkStatus() != SET)
 						{
 							connect_state = RESET;
@@ -125,7 +125,8 @@ void SerialToEthernet_TCPSever_Task(void *arg)
 						}
 					}
 			  }
-			}
+				Delay(10);
+			}/*End of Loop*/
     }
     else
     {
@@ -222,7 +223,7 @@ void SerialToEthernet_TCPClient_Task(void *arg)
 						netconn_write(conn, etherBuffer, len, NETCONN_COPY);
 					}
 				}
-				Delay(10);
+				
 				if(Eth_GetLinkStatus() != SET)
 				{
 					connect_state = RESET;
@@ -233,6 +234,7 @@ void SerialToEthernet_TCPClient_Task(void *arg)
 				}
 			}
 		}
-	}	
+		Delay(10);
+	}/*End of Loop*/
 }
 /*End of file*********************************************/

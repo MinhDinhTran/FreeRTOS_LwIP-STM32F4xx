@@ -25,7 +25,7 @@
 
 #define netifGUARD_BLOCK_TIME					    ( 250 )
 #define netifINTERFACE_TASK_STACK_SIZE		( configMINIMAL_STACK_SIZE*4 )
-#define emacBLOCK_TIME_WAITING_FOR_INPUT	( ( portTickType ) 100 )
+#define emacBLOCK_TIME_WAITING_FOR_INPUT	( ( portTickType ) 5 )
 
 struct netif xnetif; /* network interface structure */ 
 static struct netif *s_pxNetIf = NULL;
@@ -95,15 +95,9 @@ void LwIP_Init(void)
 	struct ip4_addr ipaddr;
   struct ip4_addr netmask;
   struct ip4_addr gw;
-	
-//	Ether_Tx_Buff = pvPortMalloc(ETH_TXBUFNB*ETH_TX_BUF_SIZE);
-//	Ether_Rx_Buff = pvPortMalloc(ETH_TXBUFNB*ETH_TX_BUF_SIZE);
 		
 	Ether_Tx_Buff = stSramMalloc(&HeapStruct_SRAM1, ETH_TXBUFNB*ETH_TX_BUF_SIZE);			
 	Ether_Rx_Buff = stSramMalloc(&HeapStruct_SRAM1, ETH_TXBUFNB*ETH_TX_BUF_SIZE);
-	
-//	DMARxDscrTab = pvPortMalloc( ETH_TXBUFNB*sizeof(ETH_DMADESCTypeDef));
-//	DMATxDscrTab = pvPortMalloc( ETH_TXBUFNB*sizeof(ETH_DMADESCTypeDef));
 	
 	DMARxDscrTab = stSramMalloc(&HeapStruct_SRAM1, ETH_TXBUFNB*sizeof(ETH_DMADESCTypeDef));
 	DMATxDscrTab = stSramMalloc(&HeapStruct_SRAM1, ETH_TXBUFNB*sizeof(ETH_DMADESCTypeDef));

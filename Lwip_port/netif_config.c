@@ -23,7 +23,7 @@
 #define IFNAME0 's'
 #define IFNAME1 't'
 
-#define netifGUARD_BLOCK_TIME					    ( 250 )
+#define netifGUARD_BLOCK_TIME					    ( 25 )
 #define netifINTERFACE_TASK_STACK_SIZE		( configMINIMAL_STACK_SIZE*4 )
 #define emacBLOCK_TIME_WAITING_FOR_INPUT	( ( portTickType ) 5 )
 

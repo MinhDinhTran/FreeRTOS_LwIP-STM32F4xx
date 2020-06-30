@@ -429,6 +429,11 @@
               <FilePath>..\STM32F4xx_DSP_StdPeriph_Lib_V1.8.0\STM32F4xx_StdPeriph_Driver\src\misc.c</FilePath>
             </File>
             <File>
+              <FileName>stm32f4xx_adc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\STM32F4xx_DSP_StdPeriph_Lib_V1.8.0\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_adc.c</FilePath>
+            </File>
+            <File>
               <FileName>stm32f4xx_dma.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\STM32F4xx_DSP_StdPeriph_Lib_V1.8.0\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_dma.c</FilePath>
@@ -826,6 +831,11 @@
               <FileType>1</FileType>
               <FilePath>..\RTOS_Task\dhcp_task.c</FilePath>
             </File>
+            <File>
+              <FileName>temperature_task.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\RTOS_Task\temperature_task.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -855,6 +865,11 @@
               <FileName>stm32f4xx_dht22_bsp.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Peripheral_BSP\stm32f4xx_dht22_bsp.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f4xx_temp_bsp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Peripheral_BSP\stm32f4xx_temp_bsp.c</FilePath>
             </File>
           </Files>
         </Group>

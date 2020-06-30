@@ -24,9 +24,8 @@ void SerialToEthernet_TCPSever_Task(void *arg)
 	uint16 len;
   struct netconn *conn, *newconn;
   err_t err, accept_err, recv_err;
-	static vu8 connect_state = RESET;
-	
-//	etherBuffer = pvPortMalloc(UART_RX_BUFFER_SIZE);
+	static vu8 connect_state = RESET;	
+
   etherBuffer = stSramMalloc(&HeapStruct_SRAM1, UART_RX_BUFFER_SIZE);
 	
   LWIP_UNUSED_ARG(arg);
@@ -125,7 +124,7 @@ void SerialToEthernet_TCPSever_Task(void *arg)
 						}
 					}
 			  }
-				Delay(10);
+				Delay(5);
 			}/*End of Loop*/
     }
     else
@@ -234,7 +233,7 @@ void SerialToEthernet_TCPClient_Task(void *arg)
 				}
 			}
 		}
-		Delay(10);
+		Delay(5);
 	}/*End of Loop*/
 }
 /*End of file*********************************************/

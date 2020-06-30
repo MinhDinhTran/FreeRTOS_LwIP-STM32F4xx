@@ -339,7 +339,7 @@ void ETH_link_callback(struct netif* netif)
         IP4_ADDR(&ipaddr, EmbeverStruct.ipdev.localip[0], EmbeverStruct.ipdev.localip[1], EmbeverStruct.ipdev.localip[2], EmbeverStruct.ipdev.localip[3]);
         IP4_ADDR(&netmask, EmbeverStruct.ipdev.netmask[0], EmbeverStruct.ipdev.netmask[1], EmbeverStruct.ipdev.netmask[2], EmbeverStruct.ipdev.netmask[3]);
         IP4_ADDR(&gw, EmbeverStruct.ipdev.gateway[0], EmbeverStruct.ipdev.gateway[1], EmbeverStruct.ipdev.gateway[2], EmbeverStruct.ipdev.gateway[3]);
-
+				
         netif_set_addr(&xnetif, &ipaddr, &netmask, &gw);
 
         /* When the netif is fully configured this function must be called.*/

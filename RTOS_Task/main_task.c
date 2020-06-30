@@ -43,6 +43,8 @@ void Main_Task(void)
 	UartRxBufferPointer_Init();
 	
 	UART_Init(EmbeverStruct.uartdev.BaudRate, EmbeverStruct.uartdev.WordLength,  EmbeverStruct.uartdev.StopBits, EmbeverStruct.uartdev.Parity, EmbeverStruct.uartdev.HardwareFlowControl);
+	
+	stTemperature_Init();
 
 	ETH_BSP_Config();
 
@@ -52,7 +54,7 @@ void Main_Task(void)
 	
 	xReturn = xTaskCreate((TaskFunction_t)SegmentProcess_Task,
 						(const char*)"SegmentProcess_Task",
-						(uint32_t)SegmentProcess_Task_STACK_SIZE,
+						(configSTACK_DEPTH_TYPE)SegmentProcess_Task_STACK_SIZE,
 						(void*)NULL,
 						(UBaseType_t)SegmentProcess_Task_PRIORITY,
 						(TaskHandle_t*)&SegmentProcess_Task_Handle);
@@ -61,7 +63,7 @@ void Main_Task(void)
 		
 	xReturn = xTaskCreate((TaskFunction_t)UART1_Receive_Task,
 						(const char*)"UART1_Receive_Task",
-						(uint32_t)UART1_Receive_Task_STACK_SIZE,
+						(configSTACK_DEPTH_TYPE)UART1_Receive_Task_STACK_SIZE,
 						(void*)NULL,
 						(UBaseType_t)UART1_Receive_Task_PRIORITY,
 						(TaskHandle_t*)&UART1_Receive_Task_Handle);
@@ -80,6 +82,15 @@ void Main_Task(void)
 		else{printf("LwipDHCP_Task fail!\r\n");}
 	}
 		
+//	xReturn = xTaskCreate((TaskFunction_t)stTempProcess_Task,
+//						(const char *)"stTempProcess_Task",
+//						(configSTACK_DEPTH_TYPE)stTempProcess_Task_STACK_SIZE,
+//						(void*)NULL,
+//						(UBaseType_t)stTempProcess_Task_PRIORITY,
+//						(TaskHandle_t*)&stTempProcess_Task_Handle);
+//	if(pdPASS == xReturn){}
+//	else{printf("stTempProcess_Task fail!\r\n");}
+	
 	taskEXIT_CRITICAL();
 	vTaskDelete(Main_Task_Handle);
   for( ;; ){}

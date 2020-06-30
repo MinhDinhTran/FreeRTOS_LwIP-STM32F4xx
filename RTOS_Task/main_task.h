@@ -9,8 +9,10 @@
 #define UART1_Receive_Task_STACK_SIZE								 (configMINIMAL_STACK_SIZE*2)
 #define SerialToEthernet_Task_STACK_SIZE             (configMINIMAL_STACK_SIZE*2)
 #define LwipDHCP_Task_STACK_SIZE										 (configMINIMAL_STACK_SIZE*2)
+#define stTempProcess_Task_STACK_SIZE                (configMINIMAL_STACK_SIZE*2)
 /*Priority from low to high---------------------------------------------------*/
 #define  Main_TASK_PRIORITY            		 					 (configMAX_PRIORITIES - 9)/*this define was used in main.c*/
+#define	 stTempProcess_Task_PRIORITY				         (configMAX_PRIORITIES - 8)
 #define  LwipDHCP_Task_PRIORITY											 (configMAX_PRIORITIES - 7)
 #define  SegmentProcess_Task_PRIORITY								 (configMAX_PRIORITIES - 6)
 #define  SerialToEthernet_TCPSever_Task_PRIORITY		 (configMAX_PRIORITIES - 5)

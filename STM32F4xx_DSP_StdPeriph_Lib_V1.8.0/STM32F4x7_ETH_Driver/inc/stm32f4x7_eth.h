@@ -222,8 +222,6 @@ typedef struct {
 /** 
   * @brief  ETH DMA Descriptors data structure definition
   */ 
-
-
 typedef struct  {
   __IO uint32_t   Status;                /*!< Status */
   uint32_t   ControlBufferSize;     /*!< Control and Buffer1, Buffer2 lengths */
@@ -1668,10 +1666,10 @@ typedef struct  {
 #define ETH_PTPTSSR     ((uint32_t)0x00000728)  /* PTP TSSR register */
 
 #define IS_ETH_PTP_REGISTER(REG) (((REG) == ETH_PTPTSCR) || ((REG) == ETH_PTPSSIR) || \
-                                  ((REG) == ETH_PTPTSHR) || ((REG) == ETH_PTPTSLR) || \
-                                ((REG) == ETH_PTPTSHUR) || ((REG) == ETH_PTPTSLUR) || \
-                                  ((REG) == ETH_PTPTSAR) || ((REG) == ETH_PTPTTHR) || \
-                                 ((REG) == ETH_PTPTTLR) || ((REG) == ETH_PTPTSSR)) 
+                                   ((REG) == ETH_PTPTSHR) || ((REG) == ETH_PTPTSLR) || \
+                                   ((REG) == ETH_PTPTSHUR) || ((REG) == ETH_PTPTSLUR) || \
+                                   ((REG) == ETH_PTPTSAR) || ((REG) == ETH_PTPTTHR) || \
+                                   ((REG) == ETH_PTPTTLR) || ((REG) == ETH_PTPTSSR)) 
 
 /** 
   * @brief  ETHERNET PTP clock  
@@ -1682,9 +1680,9 @@ typedef struct  {
 #define ETH_PTP_PeerToPeerTransparentClock  ((uint32_t)0x00030000)  /* Peer To Peer Transparent Clock */
 
 #define IS_ETH_PTP_TYPE_CLOCK(CLOCK) (((CLOCK) == ETH_PTP_OrdinaryClock) || \
-                                      ((CLOCK) == ETH_PTP_BoundaryClock) || \
-                           ((CLOCK) == ETH_PTP_EndToEndTransparentClock) || \
-                        ((CLOCK) == ETH_PTP_PeerToPeerTransparentClock))
+                          ((CLOCK) == ETH_PTP_BoundaryClock) || \
+                          ((CLOCK) == ETH_PTP_EndToEndTransparentClock) || \
+                                      ((CLOCK) == ETH_PTP_PeerToPeerTransparentClock))
 /** 
   * @brief  ETHERNET snapshot
   */

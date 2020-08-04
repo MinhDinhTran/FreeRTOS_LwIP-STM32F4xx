@@ -1,28 +1,31 @@
+/**
+  ******************************************************************************
+  * @author  Lanceli
+  * @version V1.0.0
+  * @date    09-May-2020
+  * @brief   Task entrance.
+	*          Create a major task.
+  ******************************************************************************
+  * @attention
+  * This project is for learning only. If it is for commercial use, please contact the author.
+	* website: www.developerlab.cn
+	*Copyright (c) 2020 Lanceli All rights reserved.
+  ******************************************************************************
+  */
 #ifndef __MAIN_TASK_H
 #define __MAIN_TASK_H
 
 /* Includes ------------------------------------------------------------------*/
 #include "task.h"
-/*Task Stack Size-------------------------------------------------------------*/
+/* Task Stack Size-------------------------------------------------------------*/
 #define	Main_TASK_STACK_SIZE												 (configMINIMAL_STACK_SIZE*2)
-#define SegmentProcess_Task_STACK_SIZE							 (configMINIMAL_STACK_SIZE*2)
 #define UART1_Receive_Task_STACK_SIZE								 (configMINIMAL_STACK_SIZE*2)
-#define SerialToEthernet_Task_STACK_SIZE             (configMINIMAL_STACK_SIZE*2)
-#define LwipDHCP_Task_STACK_SIZE										 (configMINIMAL_STACK_SIZE*2)
-#define stTempProcess_Task_STACK_SIZE                (configMINIMAL_STACK_SIZE*2)
+
 /*Priority from low to high---------------------------------------------------*/
-#define  Main_TASK_PRIORITY            		 					 (configMAX_PRIORITIES - 9)/*this define was used in main.c*/
-#define	 stTempProcess_Task_PRIORITY				         (configMAX_PRIORITIES - 8)
-#define  LwipDHCP_Task_PRIORITY											 (configMAX_PRIORITIES - 7)
-#define  SegmentProcess_Task_PRIORITY								 (configMAX_PRIORITIES - 6)
-#define  SerialToEthernet_TCPSever_Task_PRIORITY		 (configMAX_PRIORITIES - 5)
-#define  SerialToEthernet_TCPClient_Task_PRIORITY		 (configMAX_PRIORITIES - 5)
-#define  netifINTERFACE_TASK_PRIORITY			           (configMAX_PRIORITIES - 4)
+#define  Main_TASK_PRIORITY            		 					 (configMAX_PRIORITIES - 9)
 #define	 UART1_Receive_Task_PRIORITY				         (configMAX_PRIORITIES - 2)
-					
+
 extern TaskHandle_t Main_Task_Handle;
 
 extern void Main_Task(void);
-
 #endif /* __MAIN_TASK_H */
-

@@ -1,73 +1,60 @@
 /**
   ******************************************************************************
   * @author  Lanceli
-  * @version V1.0.1
+  * @version V1.0.0
   * @date    09-May-2020
-  * @brief   Serial Task operation
-	*          
+  * @brief   Ethernet low level content initialization
+	*          Enable GPIO, DMA on RMII interface
   ******************************************************************************
   * @attention
   * This project is for learning only. If it is for commercial use, please contact the author.
 	*
-	*Copyright (c) 2020 Lanceli All rights reserved.
+	* website: developerlab.cn
+	*
+	* Copyright (c) 2020 Lanceli All rights reserved.
   ******************************************************************************
   */
-#include "main.h"
 #include <string.h>
+#include "main.h"
 
-/* Transmit buffer size */
-//extern uint8_t RxBuffer0[UART_RX_BUFFER_SIZE];
-//extern uint8_t RxBuffer1[UART_RX_BUFFER_SIZE];
-
-//extern uint8_t TxBuffer[UART_TX_BUFFER_SIZE];
-
-extern uint8_t *RxBuffer0;
-extern uint8_t *RxBuffer1;
-
-extern uint8_t *TxBuffer;
-
-static uint8_t *uartToEtherRxBuffer_HeadP = NULL;
-
-#ifdef	UART_IT
-#ifdef UART_IT_RXNE
-#endif
-extern xSemaphoreHandle Semaphore_uart_idle;
-extern xSemaphoreHandle Semaphore_uart_tc;
 #define Wait_BlockTime_uart_idle	0
 #define Wait_BlockTime_uart_dma   0
 #define Wait_BlockTime_uart_tc	  20
-#ifdef	UART_DMA_IT
-extern xSemaphoreHandle Semaphore_uart_dma;
-#endif
-#endif
+
+static uint8_t *uartToEtherRxBuffer_HeadP = NULL;
 
 UARTBufferTypeDef	RxdBufferStructure;
 
 TaskHandle_t UART1_Receive_Task_Handle;
-//static uint8 SaveToUartRxBuffer(uint8 *buffer, uint16 len);
 
+
+/**
+  * @brief  UartParam_Config
+  * @param  None
+  * @retval None
+  */
 void UartParam_Config(void)
 {
 	RxBuffer0 = stSramMalloc(&HeapStruct_SRAM1, UART_RX_BUFFER_SIZE);
 	RxBuffer1 = stSramMalloc(&HeapStruct_SRAM1, UART_RX_BUFFER_SIZE);
 	
-	TxBuffer = stSramMalloc(&HeapStruct_SRAM1, UART_TX_BUFFER_SIZE);
-	
-//	RxBuffer0 = pvPortMalloc(UART_RX_BUFFER_SIZE);
-//	RxBuffer1 = pvPortMalloc(UART_RX_BUFFER_SIZE);
-//	
-//	TxBuffer = pvPortMalloc(UART_TX_BUFFER_SIZE);
+	TxBuffer = stSramMalloc(&HeapStruct_SRAM1, UART_RX_BUFFER_SIZE);
 	
 	EmbeverStruct.uartdev.BaudRate = UART_BAUDRATE;
-	EmbeverStruct.uartdev.WordLength = UART_WORDLENGTH;
 	EmbeverStruct.uartdev.StopBits = UART_STOPBITS;
 	EmbeverStruct.uartdev.Parity = UART_PARITY;
 	EmbeverStruct.uartdev.HardwareFlowControl = UART_FLOWCONTROL;
 }
 
+
+/**
+  * @brief  UART1_Receive_Task
+  * @param  None
+  * @retval None
+  */
 void UART1_Receive_Task(void)
 {
-	static uint16 UARTWirteResidualLength = 0;
+	static u16 UARTWirteResidualLength = 0;
 	while(1)
 	{
 		/*****************Serial port dma interrupt execution***********************/
@@ -125,12 +112,14 @@ void UART1_Receive_Task(void)
 	}
 }
 
-/*uart sending function
-* sending buffer
-* sending length
-*/
 
-void UartDmaStreamSend(uint8 *buffer, uint16 length)
+/**
+  * @brief  uart sending function
+	* @param  buffer: sending buffer
+	* @param  length: sending length
+  * @retva  none
+  */
+void UartDmaStreamSend(u8 *buffer, u16 length)
 {
 	DMA_ClearFlag(DMA2_Stream7, DMA_FLAG_TCIF7);
   /* Clear USART Transfer Complete Flags */
@@ -141,11 +130,16 @@ void UartDmaStreamSend(uint8 *buffer, uint16 length)
 	DMA_Cmd(DMA2_Stream7,ENABLE);
 }
 
+
+/**
+  * @brief  uart rx buffer pointer buffer init
+  * @param  None
+  * @retval None
+  */
 void UartRxBufferPointer_Init(void)
-{	
-//	uartToEtherRxBuffer_HeadP = pvPortMalloc(UART_ETHER_BUFFER_SIZE);
-		
+{
 	uartToEtherRxBuffer_HeadP = stSramMalloc(&HeapStruct_SRAM1, UART_ETHER_BUFFER_SIZE);
+	if(uartToEtherRxBuffer_HeadP == NULL){}
 		
 	RxdBufferStructure.readwriteLock = RESET;
 	
@@ -168,19 +162,19 @@ void UartRxBufferPointer_Init(void)
 	RxdBufferStructure.RxBuffer1Structure.wP = RxBuffer1;
 	
 	RxdBufferStructure.uartRecv_Counter = 0;
-	RxdBufferStructure.dmaCompleteCounter = 0;	
+	RxdBufferStructure.dmaCompleteCounter = 0;
 	RxdBufferStructure.dmaReversalValue = RESET;
 }
 
 
 
 /***********************Extract data from memory heap***************************
-@param	p:			UartToEtherBufferTypeDef
+@param	     p:	UartToEtherBufferTypeDef
 @param	length:	UartToEtherBufferTypeDef.uartRecv_Counter
 */
-uint8 WirteToUartRxBufferFromRxBuffer0(UARTBufferTypeDef *p, uint16 length)
+u8 WirteToUartRxBufferFromRxBuffer0(UARTBufferTypeDef *p, u16 length)
 {
-	uint8 reval = RESET;
+	u8 reval = RESET;
 	
 	RxdBufferStructure.readwriteLock = SET;/*lock the buffer*/
 	
@@ -240,14 +234,14 @@ uint8 WirteToUartRxBufferFromRxBuffer0(UARTBufferTypeDef *p, uint16 length)
 }
 
 /***********************Extract data from memory heap***************************
-@param	p:			UartToEtherBufferTypeDef
+@param	p:      UartToEtherBufferTypeDef
 @param	length:	UartToEtherBufferTypeDef.uartRecv_Counter
-reuturn SET:success
-				RESET:The buffer is full,or data length is fault.
+reuturn SET:    success
+				RESET:  The buffer is full,or data length is fault.
 */
-uint8 WirteToUartRxBufferFromRxBuffer1(UARTBufferTypeDef *p, uint16 length)
+u8 WirteToUartRxBufferFromRxBuffer1(UARTBufferTypeDef *p, u16 length)
 {
-	uint8 reval = RESET;
+	u8 reval = RESET;
 	
 	RxdBufferStructure.readwriteLock = SET;/*lock the buffer*/
 	
@@ -302,7 +296,14 @@ uint8 WirteToUartRxBufferFromRxBuffer1(UARTBufferTypeDef *p, uint16 length)
 	return (reval);
 }
 
-void ClearRxBuffer0WirtePointer(UARTBufferTypeDef *p, uint16 dmaITCounter)
+
+/**
+  * @brief  reset rx buffer write pointer
+  * @param  p:            object of pointer
+  * @param  dmaITCounter: uart dma interupt 
+  * @retval None
+  */
+void ClearRxBuffer0WirtePointer(UARTBufferTypeDef *p, u16 dmaITCounter)
 {
 	if(	p->RxBuffer0Structure.wP >= (RxBuffer0 + UART_RX_BUFFER_SIZE - 1) )
 	{
@@ -319,7 +320,14 @@ void ClearRxBuffer0WirtePointer(UARTBufferTypeDef *p, uint16 dmaITCounter)
 	}
 }
 
-void ClearRxBuffer1WirtePointer(UARTBufferTypeDef *p, uint16 dmaITCounter)
+
+/**
+  * @brief  reset rx buffer write pointer
+  * @param  p:            object of pointer
+  * @param  dmaITCounter: uart dma interupt 
+  * @retval None
+  */
+void ClearRxBuffer1WirtePointer(UARTBufferTypeDef *p, u16 dmaITCounter)
 {
 	if(	p->RxBuffer1Structure.wP >= (RxBuffer1 + UART_RX_BUFFER_SIZE - 1) )
 	{
@@ -336,9 +344,17 @@ void ClearRxBuffer1WirtePointer(UARTBufferTypeDef *p, uint16 dmaITCounter)
 	}
 }
 
-uint8 ReadUartRxBufferToEtherBuffer(UARTBufferTypeDef *p, uint8 *EtherBuffer, uint16 length)
+
+
+/**
+  * @brief  read rx buffer to external buffer
+  * @param  p:            object of pointer
+  * @param  dmaITCounter: uart dma interupt 
+  * @retval None
+  */
+u8 ReadUartRxBufferToEtherBuffer(UARTBufferTypeDef *p, u8 *EtherBuffer, u16 length)
 {
-	uint8 reval = RESET;
+	u8 reval = RESET;
 	
 	RxdBufferStructure.readwriteLock = RESET;/*unlock the buffer*/
 	

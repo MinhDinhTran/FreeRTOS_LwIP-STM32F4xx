@@ -1,9 +1,6 @@
-# LwIP work with RTOS in STM32F4xx
-
 这是一个基于STM32F4xx系列芯片的代码框架，在FreeRTOS上搭载LwIP，目的是为了以太网相关开发提供方便的平台。
 
 This is a code framework based on stm32f4xx series chips, which is equipped with LwIP on FreeRTOS. The purpose is to provide a convenient platform for Ethernet related development.
-
 
 ## 硬件部分|Hardware
 
@@ -13,7 +10,7 @@ This is a code framework based on stm32f4xx series chips, which is equipped with
 2. MCU具有CMM（内核耦合寄存器），将系统内核放置到CMM中，使程序栈调用速率大大提升。
 3. MCU具有FPU模块，使得浮点运算速率大大提升，可以优化算法计算速度。
 
-PCB外形如下如所示：
+PCB外形如下图所示：
 
 **STM32F405RG-EVB**
 

@@ -1,14 +1,19 @@
- /** 
-	* @version V1.0.0
-  * @date    01-Jue-2020
-  * @brief   Heap allocations
-	*	@note    This memory allocation method is only suitable for single SRAM¡£
-	*					 	The whole SRAM cannot be shared with other stacks
+/**
+  ******************************************************************************
+  * @author  Lanceli
+  * @version V1.0.1
+  * @date    09-Aug-2020
+  * @brief   on-and off-chip memory allocation
+  *          How to use it.
+  *          1. initializate memory space.[void stSramInit(Heap_TypeDef *p, u32 headAddr, u32 heapSize)]
+  *          2. Allocate memory.[void *stSramMalloc(Heap_TypeDef *p, u32 xWantedSize )]
   ******************************************************************************
   * @attention
   * This project is for learning only. If it is for commercial use, please contact the author.
-	*
-	* Copyright (c) 2020 Lanceli All rights reserved.
+  *
+  * website: developerlab.cn
+  *
+  * Copyright (c) 2020 Lanceli All rights reserved.
   ******************************************************************************
   */
 #include "main.h"
@@ -16,20 +21,24 @@
 
 /*
 *function: Initialize SRAM.
-*param: p,				object of Heap_TypeDef Struct.
-*param: heapHead,	the head address of SRAM.
+*param: p,		  object of Heap_TypeDef Struct.
+*param: heapHead, the head address of SRAM.
 *param: heapSize, the size of SRAM that can be use.
 */
 void stSramInit(Heap_TypeDef *p, u32 headAddr, u32 heapSize)
 {
 	u32 offset = 0;
+	
 #ifdef HEAP_DEBUG
 	UART_Init_115200();
 #endif
+	
 	offset = (u32)(headAddr%ALIGNMENT_SIZE);
+	
 #ifdef HEAP_DEBUG
 	printf("offset:%d\r\n",offset);
 #endif
+	
 	/*alignment*/
 	if(offset)
 	{
@@ -39,11 +48,13 @@ void stSramInit(Heap_TypeDef *p, u32 headAddr, u32 heapSize)
 	{
 		p->heap_head = (void *)headAddr;
 	}
+	
 #ifdef HEAP_DEBUG
 	printf("heapHead:%p\r\n",p->heap_head);
 #endif
 	
 	offset = (headAddr + heapSize)%ALIGNMENT_SIZE;
+	
 #ifdef HEAP_DEBUG
 	printf("offset:%d\r\n",offset);
 #endif
@@ -57,8 +68,7 @@ void stSramInit(Heap_TypeDef *p, u32 headAddr, u32 heapSize)
 	}
 #ifdef HEAP_DEBUG
 	printf("heapTail:%p\r\n",p->heap_tail);
-#endif
-	
+#endif	
 	
 	p->heap_size = ((u32)((u8 *)p->heap_tail - (u8 *)p->heap_head));
 #ifdef HEAP_DEBUG
@@ -67,6 +77,7 @@ void stSramInit(Heap_TypeDef *p, u32 headAddr, u32 heapSize)
 	
 	p->heap_current = p->heap_head;
 	p->heap_residual = p->heap_size;
+	
 #ifdef HEAP_DEBUG
 	printf("heap_residual:%d\r\nheap_current:%p\r\n",p->heap_residual,p->heap_current);
 #endif
@@ -74,7 +85,7 @@ void stSramInit(Heap_TypeDef *p, u32 headAddr, u32 heapSize)
 
 /*
 *function: Allocate memory.
-*param: p,				    object of Heap_TypeDef Struct.
+*param:           p,	object of Heap_TypeDef Struct.
 *param: xWantedSize,	the size you need.
 *return: the pointer of the memory.
 */
@@ -86,10 +97,12 @@ void *stSramMalloc(Heap_TypeDef *p, u32 xWantedSize )
 	if(xWantedSize)
 	{
 		pvReturn = p->heap_current;	
-	  offset = xWantedSize%ALIGNMENT_SIZE;		
+	  offset = xWantedSize%ALIGNMENT_SIZE;
+		
 #ifdef HEAP_DEBUG
     printf("offset:%d\r\n",offset);
-#endif		
+#endif
+		
 		if(offset)
 		{
 			current_offset = xWantedSize + ALIGNMENT_SIZE - offset;
@@ -99,10 +112,12 @@ void *stSramMalloc(Heap_TypeDef *p, u32 xWantedSize )
 		{
 			p->heap_current = (void *)((u8 *)p->heap_current + xWantedSize);
 		}
-		p->heap_residual = ((u32)((u8 *)p->heap_tail - (u8 *)p->heap_current));
+		p->heap_residual = (u32)((u8 *)p->heap_tail - (u8 *)p->heap_current);
+		
 #ifdef HEAP_DEBUG
 	  printf("heap_residual:%d\r\nheap_current:%p\r\n",p->heap_residual,p->heap_current);
 #endif
+		
 	}
 	else
 	{

@@ -4,19 +4,24 @@
   * @version V1.0.0
   * @date    09-May-2020
   * @brief   Delay Timer Initilization
-	*          
+  *          the Timer is TIM2
+  *          
   ******************************************************************************
   * @attention
   * This project is for learning only. If it is for commercial use, please contact the author.
-	*
-	*Copyright (c) 2020 Lanceli All rights reserved.
+  *
+  *Copyright (c) 2020 Lanceli All rights reserved.
   ******************************************************************************
   */
   
 #include "main.h"
 
 
-
+/**
+  * @brief  DelayTimer_Init
+  * @param  TIM_Period: The frequency on the clock bus currently in use (TIM_Period MHz)
+  * @retval None
+  */
 void DelayTimer_Init(u16 TIM_Period)
 {
 	TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
@@ -31,6 +36,11 @@ void DelayTimer_Init(u16 TIM_Period)
 	TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStructure);
 }
 
+/**
+  * @brief  Delay_us
+  * @param  time_us: Tick of us
+  * @retval None
+  */
 void Delay_us(u32 time_us)
 {
 	/* Enable the TIM Counter */
@@ -41,9 +51,15 @@ void Delay_us(u32 time_us)
 		while(TIM_GetFlagStatus(TIM2, TIM_FLAG_Update) == RESET);
 		TIM_ClearFlag(TIM2, TIM_FLAG_Update);
 	}
+	
 	TIM_Cmd(TIM2, DISABLE);
 }
 
+/**
+  * @brief  Delay_ms
+  * @param  time_ms: Tick of ms
+  * @retval None
+  */
 void Delay_ms(u32 time_ms)
 {
 	while(time_ms--)

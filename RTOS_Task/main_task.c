@@ -3,94 +3,66 @@
   * @author  Lanceli
   * @version V1.0.0
   * @date    09-May-2020
-  * @brief   Task entrance.
-	*          Create a major task.
+  * @brief   Ethernet low level content initialization
+	*          Enable GPIO, DMA on RMII interface
   ******************************************************************************
   * @attention
   * This project is for learning only. If it is for commercial use, please contact the author.
 	*
-	*Copyright (c) 2020 Lanceli All rights reserved.
+	* website: developerlab.cn
+	*
+	* Copyright (c) 2020 Lanceli All rights reserved.
   ******************************************************************************
   */
 #include "main.h"
 
 TaskHandle_t Main_Task_Handle = NULL;/*Main Task Handle*/
 
-EmbeverConfig_TypeDef EmbeverStruct;
 Heap_TypeDef HeapStruct_SRAM1;
+EmbeverConfig_TypeDef EmbeverStruct;
 
-static void Device_SetDefault(void)
+
+/**
+  * @brief  Memory initialization, Peripheral parameter configuration.
+  * @param  None
+  * @retval None
+  */
+static void Device_Init(void)
 {
 	UartParam_Config();
-	
-	EmbeverStruct.dhcp_enable = ENABLE;
-	EmbeverStruct.start_state = DATA_MODE;
-	EmbeverStruct.work_mode = TCP_SERVER;
 }
 
+
+/**
+  * @brief  main task
+  * @param  None
+  * @retval None
+  */
 void Main_Task(void)
 {
-	BaseType_t xReturn = pdPASS;
+//	BaseType_t xReturn = pdPASS;
 	
 	DelayTimer_Init(TIM2_Period);
-
-	SRAM_Initilization();
-
+	
 	stSramInit(&HeapStruct_SRAM1, STM32F4XX_SRAM1_START, STM32F4XX_SRAM1_SIZE);
 	
-	Device_SetDefault();
+	Device_Init();
 	
 	UartRxBufferPointer_Init();
 	
-	UART_Init(EmbeverStruct.uartdev.BaudRate, EmbeverStruct.uartdev.WordLength,  EmbeverStruct.uartdev.StopBits, EmbeverStruct.uartdev.Parity, EmbeverStruct.uartdev.HardwareFlowControl);
-	
-	stTemperature_Init();
-
-	ETH_BSP_Config();
-
-	LwIP_Init();
+	UART_Init(EmbeverStruct.uartdev.BaudRate, EmbeverStruct.uartdev.StopBits, EmbeverStruct.uartdev.Parity, EmbeverStruct.uartdev.HardwareFlowControl);
 	
 	taskENTER_CRITICAL();
 	
-	xReturn = xTaskCreate((TaskFunction_t)SegmentProcess_Task,
-						(const char*)"SegmentProcess_Task",
-						(configSTACK_DEPTH_TYPE)SegmentProcess_Task_STACK_SIZE,
-						(void*)NULL,
-						(UBaseType_t)SegmentProcess_Task_PRIORITY,
-						(TaskHandle_t*)&SegmentProcess_Task_Handle);
-	if(pdPASS == xReturn){}
-	else{printf("SegmentProcess_Task fail!\r\n");}
-		
-	xReturn = xTaskCreate((TaskFunction_t)UART1_Receive_Task,
-						(const char*)"UART1_Receive_Task",
-						(configSTACK_DEPTH_TYPE)UART1_Receive_Task_STACK_SIZE,
-						(void*)NULL,
-						(UBaseType_t)UART1_Receive_Task_PRIORITY,
-						(TaskHandle_t*)&UART1_Receive_Task_Handle);
-	if(pdPASS == xReturn){}
-	else{printf("UART1_Receive_Task fail!\r\n");}
-
-	if(EmbeverStruct.dhcp_enable == ENABLE)
-	{
-		xReturn	= xTaskCreate((TaskFunction_t) LwipDHCP_Task,
-													(const char *)  "LwipDHCP_Task",		/*lint !e971 Unqualified char types are allowed for strings and single characters only. */
-													(configSTACK_DEPTH_TYPE) LwipDHCP_Task_STACK_SIZE,
-													(void * ) NULL,
-													(UBaseType_t) LwipDHCP_Task_PRIORITY,
-													(TaskHandle_t *) &LwipDHCP_Task_Handle);
-		if(pdPASS == xReturn){}
-		else{printf("LwipDHCP_Task fail!\r\n");}
-	}
-		
-//	xReturn = xTaskCreate((TaskFunction_t)stTempProcess_Task,
-//						(const char *)"stTempProcess_Task",
-//						(configSTACK_DEPTH_TYPE)stTempProcess_Task_STACK_SIZE,
+//	xReturn = xTaskCreate((TaskFunction_t)SramTesting_Task,
+//						(const char*)"SramTesting_Task",
+//						(uint32_t)SramTesting_Task_SIZE,
 //						(void*)NULL,
-//						(UBaseType_t)stTempProcess_Task_PRIORITY,
-//						(TaskHandle_t*)&stTempProcess_Task_Handle);
+//						(UBaseType_t)SramTesting_Task_PRIORITY,
+//						(TaskHandle_t*)&SramTesting_Task_Handle);
 //	if(pdPASS == xReturn){}
-//	else{printf("stTempProcess_Task fail!\r\n");}
-	
+//	else{}
+  
 	taskEXIT_CRITICAL();
 	vTaskDelete(Main_Task_Handle);
   for( ;; ){}

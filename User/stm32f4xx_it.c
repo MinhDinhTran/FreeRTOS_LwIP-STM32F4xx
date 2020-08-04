@@ -149,60 +149,6 @@ __weak void SysTick_Handler(void)
 /*  available peripheral interrupt handler's name please refer to the startup */
 /*  file (startup_stm32f4xx.s).                                               */
 /******************************************************************************/
-void ETH_IRQHandler(void)
-{
-	/* Frame received */
-  if ( ETH_GetDMAFlagStatus(ETH_DMA_FLAG_R) == SET) 
-  {
-		/* Clear the interrupt flags. */
-		/* Clear the Eth DMA Rx IT pending bits */
-		ETH_DMAClearITPendingBit(ETH_DMA_IT_R|ETH_DMA_IT_NIS);
-		EthRecvMDA_IRQ();
-	}
-}
-
-#ifdef	UART_IT
-void USART1_IRQHandler(void)
-{
-#ifdef	UART_IT_IDLE
-	uint8_t clear;
-#endif
-#ifdef	UART_IT_RXNE
-//	if(USART_GetITStatus(USART1, USART_IT_RXNE) == SET)
-	{
-//		USART_ClearITPendingBit(USART1, USART_IT_RXNE);
-		UartRecv_RXNE_IRQ();
-	}
-#endif
-#ifdef	UART_IT_IDLE
-	if(USART_GetITStatus(USART1, USART_IT_IDLE) == SET)
-	{
-		clear = USART1->SR;
-    clear = USART1->DR;
-		clear = clear;
-		USART_ClearITPendingBit(USART1, USART_IT_IDLE);
-		UartRecv_IDLE_IRQ();
-	}
-#endif
-#ifdef	UART_IT_TC
-	if(USART_GetITStatus(USART1, USART_IT_TC) == SET)
-	{
-		USART_ClearITPendingBit(USART1, USART_IT_TC);
-		UartTransmit_IRQ();
-	}
-#endif	
-}
-
-void DMA2_Stream5_IRQHandler(void)
-{
-	if(DMA_GetITStatus(DMA2_Stream5, DMA_IT_TCIF5) == SET)
-	{
-		DMA_ClearITPendingBit(DMA2_Stream5, DMA_IT_TCIF5);
-		DmaComplete_IRQ();
-	}
-}
-#endif
-
 
 
 /**

@@ -51,6 +51,10 @@ extern "C" {
 #define LOCALPORT 5000
 #define REMOTELPORT 5000
 
+
+#define STM32F407Rxxx
+
+
 typedef enum
 {
 	AT_MODE = 0,

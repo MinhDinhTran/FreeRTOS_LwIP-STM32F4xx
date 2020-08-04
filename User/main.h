@@ -37,13 +37,14 @@
 #include "delay.h"
 #include "BSPConfig.h"
 
+
 #include "main_task.h"
 #include "uart_task.h"
 
 #include "stm32f4xx.h"
 #include "stm32f4xx_uart_bsp.h"
 #include "stm32f4xx_heap_bsp.h"
-
+#include "stm32f4xx_eth_bsp.h"
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
@@ -106,8 +107,9 @@
 
 
 /*Debug Message*/
-#define HEAP_DEBUG
-#define NAND_DEBUG
+//#define HEAP_DEBUG
+//#define NAND_DEBUG
+#define ETH_DEBUG
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
 

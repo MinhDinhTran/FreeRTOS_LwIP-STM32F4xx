@@ -32,7 +32,7 @@ extern "C" {
 #define STM32F4XX_eSRAM_START			(u32)0x68000000
 #define STM32F4XX_eSRAM_SIZE			(u32)0x80000
 	
-#define ALIGNMENT_SIZE					4
+#define ALIGNMENT_SIZE					  4
 	
 #pragma pack(4)
 typedef struct

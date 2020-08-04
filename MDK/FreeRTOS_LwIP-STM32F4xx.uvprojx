@@ -365,7 +365,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F40_41xxx,USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>..\STM32F4xx_DSP_StdPeriph_Lib_V1.8.0\CMSIS\Device\ST\STM32F4xx\Include;..\STM32F4xx_DSP_StdPeriph_Lib_V1.8.0\CMSIS\Include;..\STM32F4xx_DSP_StdPeriph_Lib_V1.8.0\STM32F4x7_ETH_Driver\inc;..\STM32F4xx_DSP_StdPeriph_Lib_V1.8.0\STM32F4xx_StdPeriph_Driver\inc;..\FreeRTOSv10.3.1\include;..\FreeRTOSv10.3.1\portable\RVDS\ARM_CM4F;..\Peripheral_BSP;..\RTOS_Task;..\User</IncludePath>
+              <IncludePath>..\STM32F4xx_DSP_StdPeriph_Lib_V1.8.0\CMSIS\Device\ST\STM32F4xx\Include;..\STM32F4xx_DSP_StdPeriph_Lib_V1.8.0\CMSIS\Include;..\STM32F4xx_DSP_StdPeriph_Lib_V1.8.0\STM32F4xx_StdPeriph_Driver\inc;..\STM32F4xx_DSP_StdPeriph_Lib_V1.8.0\STM32F4x7_ETH_Driver\inc;..\FreeRTOSv10.3.1\include;..\FreeRTOSv10.3.1\portable\RVDS\ARM_CM4F;..\Peripheral_BSP;..\RTOS_Task;..\User</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -582,6 +582,11 @@
               <FileName>stm32f4xx_uart_bsp.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Peripheral_BSP\stm32f4xx_uart_bsp.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f4xx_eth_bsp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Peripheral_BSP\stm32f4xx_eth_bsp.c</FilePath>
             </File>
           </Files>
         </Group>

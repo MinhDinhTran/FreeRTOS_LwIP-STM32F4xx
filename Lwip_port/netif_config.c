@@ -1,12 +1,14 @@
 /**
   ******************************************************************************
   * @author  Lanceli
-  * @version V1.0.0
+  * @version V1.0.1
   * @date    09-May-2020
   * @brief   netif initialization
   ******************************************************************************
   * @attention
   * This project is for learning only. If it is for commercial use, please contact the author.
+	*
+	* website: www.developerlab.cn
 	*
 	*Copyright (c) 2020 Lanceli All rights reserved.
   ******************************************************************************
@@ -18,36 +20,34 @@
 #include "lwip/tcpip.h"
 #include "lwip/etharp.h"
 
-/* Define those to better describe your network interface. */
-#define IFNAME0 's'
-#define IFNAME1 't'
 
-#define netifGUARD_BLOCK_TIME					    ( 25 )
-#define netifINTERFACE_TASK_STACK_SIZE		( configMINIMAL_STACK_SIZE*4 )
-#define emacBLOCK_TIME_WAITING_FOR_INPUT	( ( portTickType ) 5 )
+struct netif xnetif; /* network interface structure */
 
-struct netif xnetif; /* network interface structure */ 
 static struct netif *s_pxNetIf = NULL;
-
 xSemaphoreHandle s_xSemaphore = NULL;
+
+/* Global pointer for last received frame infos */
+
+/* Global pointers to track current transmit and receive descriptors */
 
 uint8_t *Ether_Tx_Buff = NULL;
 uint8_t *Ether_Rx_Buff = NULL;
-/* Global pointer for last received frame infos */
-extern ETH_DMA_Rx_Frame_infos *DMA_RX_FRAME_infos;
-/* Global pointers to track current transmit and receive descriptors */
-extern ETH_DMADESCTypeDef  *DMATxDescToSet;
-extern ETH_DMADESCTypeDef  *DMARxDescToGet;
-/* Ethernet Rx & Tx DMA Descriptors */
-
-//extern ETH_DMADESCTypeDef  DMARxDscrTab[ETH_RXBUFNB];/* Ethernet Rx MA Descriptor */
-//extern ETH_DMADESCTypeDef  DMATxDscrTab[ETH_TXBUFNB];/* Ethernet Tx DMA Descriptor */
 
 ETH_DMADESCTypeDef  *DMARxDscrTab;
 ETH_DMADESCTypeDef  *DMATxDscrTab;
+
+extern ETH_InitTypeDef ETH_InitStructure;
+
 static err_t ethernetif_init(struct netif *netif);
 static struct pbuf * low_level_input(struct netif *netif);
+static void ETH_link_callback(struct netif* netif);
 
+
+/**
+  * @brief  ip paramters set default
+  * @param  p: the object of EmbeverConfig_TypeDef
+  * @retval None
+  */
 static void ip_default(EmbeverConfig_TypeDef *p)
 {
 	p->ipdev.mac[0] = MAC_1;
@@ -80,7 +80,7 @@ static void ip_default(EmbeverConfig_TypeDef *p)
 	p->ipdev.localport = LOCALPORT;
 	p->ipdev.remoteport = REMOTELPORT;
 	
-	p->ipdev.dhcpstatus=0;
+	p->ipdev.dhcpstatus=RESET;
 }
 
 /**
@@ -94,14 +94,17 @@ void LwIP_Init(void)
 	struct ip4_addr ipaddr;
   struct ip4_addr netmask;
   struct ip4_addr gw;
-		
+	
+	
+	/*Create receive/sending buffer*/
 	Ether_Tx_Buff = stSramMalloc(&HeapStruct_SRAM1, ETH_TXBUFNB*ETH_TX_BUF_SIZE);			
 	Ether_Rx_Buff = stSramMalloc(&HeapStruct_SRAM1, ETH_TXBUFNB*ETH_TX_BUF_SIZE);
 	
+	/*Create receive/sending discriptor list*/
 	DMARxDscrTab = stSramMalloc(&HeapStruct_SRAM1, ETH_TXBUFNB*sizeof(ETH_DMADESCTypeDef));
 	DMATxDscrTab = stSramMalloc(&HeapStruct_SRAM1, ETH_TXBUFNB*sizeof(ETH_DMADESCTypeDef));
 	
-	tcpip_init(NULL,NULL);
+	tcpip_init(NULL,NULL);	
 	
 	ip_default(&EmbeverStruct);
 	
@@ -169,7 +172,7 @@ TRY_GET_NEXT_FRAME:
         }
       }
     }
-		Delay(10);
+		Delay(5);
   }
 }
 
@@ -271,7 +274,7 @@ static err_t low_level_output(struct netif *netif, struct pbuf *p)
 {
   static xSemaphoreHandle xTxSemaphore = NULL;
   struct pbuf *q;
-  u8 *buffer ;
+  u8 *buffer;
   __IO ETH_DMADESCTypeDef *DmaTxDesc;
   uint16_t framelength = 0;
   uint32_t bufferoffset = 0;
@@ -462,5 +465,101 @@ static err_t ethernetif_init(struct netif *netif)
 
   return ERR_OK;
 }
+
+/**
+  * @brief  Link callback function, this function is called on change of link status.
+  * @param  The network interface
+  * @retval None
+  */
+static void ETH_link_callback(struct netif* netif)
+{
+    __IO uint32_t timeout = 0;
+    uint32_t tmpreg, RegValue;
+    struct ip4_addr ipaddr;
+    struct ip4_addr netmask;
+    struct ip4_addr gw;
+
+    if (netif_is_link_up(netif))
+    {
+        /* Restart the autonegotiation */
+        if (ETH_InitStructure.ETH_AutoNegotiation != ETH_AutoNegotiation_Disable)
+        {
+            /* Reset Timeout counter */
+            timeout = 0;
+
+            /* Enable Auto-Negotiation */
+            ETH_WritePHYRegister(LAN8720_PHY_ADDRESS, PHY_BCR, PHY_AutoNegotiation);
+
+            /* Wait until the auto-negotiation will be completed */
+            do
+            {
+                timeout++;
+            } while (!(ETH_ReadPHYRegister(LAN8720_PHY_ADDRESS, PHY_BSR) & PHY_AutoNego_Complete) && (timeout < (uint32_t)PHY_READ_TO));
+
+            /* Reset Timeout counter */
+            timeout = 0;
+
+            /* Read the result of the auto-negotiation */
+            RegValue = ETH_ReadPHYRegister(LAN8720_PHY_ADDRESS, LAN8720_PSCSR);
+
+            /* Configure the MAC with the Duplex Mode fixed by the auto-negotiation process */
+            if ((RegValue & 0x0010) != (uint32_t)RESET)
+            {
+                /* Set Ethernet duplex mode to Full-duplex following the auto-negotiation */
+                ETH_InitStructure.ETH_Mode = ETH_Mode_FullDuplex;
+            }
+            else
+            {
+                /* Set Ethernet duplex mode to Half-duplex following the auto-negotiation */
+                ETH_InitStructure.ETH_Mode = ETH_Mode_HalfDuplex;
+            }
+            /* Configure the MAC with the speed fixed by the auto-negotiation process */
+            if (RegValue & 0x0008)
+            {
+                /* Set Ethernet speed to 10M following the auto-negotiation */
+                ETH_InitStructure.ETH_Speed = ETH_Speed_100M;
+            }
+            else
+            {
+                /* Set Ethernet speed to 100M following the auto-negotiation */
+                ETH_InitStructure.ETH_Speed = ETH_Speed_10M;
+            }
+
+            /*------------------------ ETHERNET MACCR Re-Configuration --------------------*/
+            /* Get the ETHERNET MACCR value */
+            tmpreg = ETH->MACCR;
+
+            /* Set the FES bit according to ETH_Speed value */
+            /* Set the DM bit according to ETH_Mode value */
+            tmpreg |= (uint32_t)(ETH_InitStructure.ETH_Speed | ETH_InitStructure.ETH_Mode);
+
+            /* Write to ETHERNET MACCR */
+            ETH->MACCR = (uint32_t)tmpreg;
+
+            _eth_delay_(ETH_REG_WRITE_DELAY);
+            tmpreg = ETH->MACCR;
+            ETH->MACCR = tmpreg;
+        }
+
+        /* Restart MAC interface */
+        ETH_Start();
+
+        IP4_ADDR(&ipaddr, EmbeverStruct.ipdev.localip[0], EmbeverStruct.ipdev.localip[1], EmbeverStruct.ipdev.localip[2], EmbeverStruct.ipdev.localip[3]);
+        IP4_ADDR(&netmask, EmbeverStruct.ipdev.netmask[0], EmbeverStruct.ipdev.netmask[1], EmbeverStruct.ipdev.netmask[2], EmbeverStruct.ipdev.netmask[3]);
+        IP4_ADDR(&gw, EmbeverStruct.ipdev.gateway[0], EmbeverStruct.ipdev.gateway[1], EmbeverStruct.ipdev.gateway[2], EmbeverStruct.ipdev.gateway[3]);
+				
+        netif_set_addr(&xnetif, &ipaddr, &netmask, &gw);
+
+        /* When the netif is fully configured this function must be called.*/
+        netif_set_up(&xnetif);
+    }
+    else
+    {
+        ETH_Stop();
+        /*  When the netif link is down this function must be called.*/
+        netif_set_down(&xnetif);
+    }
+}
+
 
 /*End of file*********************************************/

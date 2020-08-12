@@ -1744,6 +1744,10 @@ typedef struct  {
 #define  ETH_SUCCESS            ((uint32_t)1)
 
 
+extern __IO ETH_DMA_Rx_Frame_infos *DMA_RX_FRAME_infos;
+
+extern __IO ETH_DMADESCTypeDef     *DMATxDescToSet;
+extern __IO ETH_DMADESCTypeDef     *DMARxDescToGet;
 /**
   * @}
   */

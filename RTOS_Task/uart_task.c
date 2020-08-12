@@ -29,25 +29,6 @@ TaskHandle_t UART1_Receive_Task_Handle;
 
 
 /**
-  * @brief  UartParam_Config
-  * @param  None
-  * @retval None
-  */
-void UartParam_Config(void)
-{
-	RxBuffer0 = stSramMalloc(&HeapStruct_SRAM1, UART_RX_BUFFER_SIZE);
-	RxBuffer1 = stSramMalloc(&HeapStruct_SRAM1, UART_RX_BUFFER_SIZE);
-	
-	TxBuffer = stSramMalloc(&HeapStruct_SRAM1, UART_RX_BUFFER_SIZE);
-	
-	EmbeverStruct.uartdev.BaudRate = UART_BAUDRATE;
-	EmbeverStruct.uartdev.StopBits = UART_STOPBITS;
-	EmbeverStruct.uartdev.Parity = UART_PARITY;
-	EmbeverStruct.uartdev.HardwareFlowControl = UART_FLOWCONTROL;
-}
-
-
-/**
   * @brief  UART1_Receive_Task
   * @param  None
   * @retval None
@@ -111,6 +92,25 @@ void UART1_Receive_Task(void)
 		Delay(10);
 	}
 }
+
+/**
+  * @brief  UartParam_Config
+  * @param  None
+  * @retval None
+  */
+void UartParam_Init(void)
+{
+	RxBuffer0 = stSramMalloc(&HeapStruct_SRAM1, UART_RX_BUFFER_SIZE);
+	RxBuffer1 = stSramMalloc(&HeapStruct_SRAM1, UART_RX_BUFFER_SIZE);
+	
+	TxBuffer = stSramMalloc(&HeapStruct_SRAM1, UART_RX_BUFFER_SIZE);
+	
+	EmbeverStruct.uartdev.BaudRate = UART_BAUDRATE;
+	EmbeverStruct.uartdev.StopBits = UART_STOPBITS;
+	EmbeverStruct.uartdev.Parity = UART_PARITY;
+	EmbeverStruct.uartdev.HardwareFlowControl = UART_FLOWCONTROL;
+}
+
 
 
 /**
@@ -236,6 +236,7 @@ u8 WirteToUartRxBufferFromRxBuffer0(UARTBufferTypeDef *p, u16 length)
 /***********************Extract data from memory heap***************************
 @param	p:      UartToEtherBufferTypeDef
 @param	length:	UartToEtherBufferTypeDef.uartRecv_Counter
+
 reuturn SET:    success
 				RESET:  The buffer is full,or data length is fault.
 */

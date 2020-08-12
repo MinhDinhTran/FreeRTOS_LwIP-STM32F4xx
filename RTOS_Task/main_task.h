@@ -4,7 +4,7 @@
   * @version V1.0.0
   * @date    09-May-2020
   * @brief   Task entrance.
-	*          Create a major task.
+	*          Size of task stack & priority of task
   ******************************************************************************
   * @attention
   * This project is for learning only. If it is for commercial use, please contact the author.
@@ -20,10 +20,17 @@
 /* Task Stack Size-------------------------------------------------------------*/
 #define	Main_TASK_STACK_SIZE												 (configMINIMAL_STACK_SIZE*2)
 #define UART1_Receive_Task_STACK_SIZE								 (configMINIMAL_STACK_SIZE*2)
+#define netifINTERFACE_TASK_STACK_SIZE		           (configMINIMAL_STACK_SIZE*4)
 
 /*Priority from low to high---------------------------------------------------*/
 #define  Main_TASK_PRIORITY            		 					 (configMAX_PRIORITIES - 9)
+#define  netifINTERFACE_TASK_PRIORITY			           (configMAX_PRIORITIES - 4)
 #define	 UART1_Receive_Task_PRIORITY				         (configMAX_PRIORITIES - 2)
+
+
+
+
+
 
 extern TaskHandle_t Main_Task_Handle;
 

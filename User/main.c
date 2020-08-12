@@ -1,7 +1,7 @@
 /**
   ******************************************************************************
   * @author  Lanceli
-  * @version V1.0.0
+  * @version V1.0.1
   * @date    09-May-2020
   * @brief   Project entrance.
   *          Create a major task.

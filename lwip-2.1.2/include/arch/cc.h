@@ -47,9 +47,9 @@ typedef unsigned   char    uint8;
 typedef unsigned   short   uint16;
 typedef unsigned   long    uint32;
 
-typedef volatile uint32  vuint32;
-typedef volatile uint16 vuint16;
-typedef volatile uint8  vuint8;
+typedef volatile   uint32  vuint32;
+typedef volatile   uint16 vuint16;
+typedef volatile   uint8  vuint8;
 
 #define U16_F "hu"
 #define S16_F "d"

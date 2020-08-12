@@ -43,5 +43,5 @@ extern volatile uint32_t EthStatus;
 
 extern void ETH_BSP_Config(void);
 extern void EthRecvMDA_IRQ(void);
-uint8_t Eth_GetLinkStatus(void);
+extern uint8_t Eth_GetLinkStatus(void);
 #endif /* __STM32F407_ETH_BSP_H */

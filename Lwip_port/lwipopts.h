@@ -88,7 +88,7 @@ a lot of data that needs to be copied, this should be set high. */
 
 
 /* ---------- ICMP options ---------- */
-#define LWIP_ICMP                       1
+#define LWIP_ICMP                1
 
 
 /* ---------- DHCP options ---------- */
@@ -104,14 +104,14 @@ a lot of data that needs to be copied, this should be set high. */
 
 
 /* ---------- Statistics options ---------- */
-#define LWIP_STATS 0
-#define LWIP_PROVIDE_ERRNO 1
+#define LWIP_STATS           0
+#define LWIP_PROVIDE_ERRNO   1
 
 /* ---------- link callback options ---------- */
 /* LWIP_NETIF_LINK_CALLBACK==1: Support a callback function from an interface
  * whenever the link changes (i.e., link down)
  */
-#define LWIP_NETIF_LINK_CALLBACK        1
+#define LWIP_NETIF_LINK_CALLBACK     1
 
 /*
    --------------------------------------

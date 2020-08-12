@@ -37,10 +37,11 @@
 #include "delay.h"
 #include "BSPConfig.h"
 
-
 #include "main_task.h"
 #include "uart_task.h"
 
+
+#include "netif_config.h"
 #include "stm32f4xx.h"
 #include "stm32f4xx_uart_bsp.h"
 #include "stm32f4xx_heap_bsp.h"
@@ -99,21 +100,19 @@
 #define PIout(n)   BIT_ADDR(GPIOI_ODR_Addr,n)
 #define PIin(n)    BIT_ADDR(GPIOI_IDR_Addr,n)
 
+/*Redefining RTOS delay function*/
 #define Delay(nCount)	vTaskDelay(nCount)
 
+/*Hardware interupt priority*/
+#define ETH_IRQnPriority									6
 #define USART1_IRQnPriority								7
 #define DMA2_Stream5_IRQnPriority					8
-#define ETH_IRQnPriority									13
-
 
 /*Debug Message*/
-//#define HEAP_DEBUG
-//#define NAND_DEBUG
+#define HEAP_DEBUG
 #define ETH_DEBUG
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
 
 
 #endif /* __MAIN_H */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

@@ -4,13 +4,14 @@
   * @version V1.0.0
   * @date    09-May-2020
   * @brief   Delay Timer Initilization
-  *          the Timer is TIM2
-  *          
+	*          
   ******************************************************************************
   * @attention
   * This project is for learning only. If it is for commercial use, please contact the author.
   *
-  *Copyright (c) 2020 Lanceli All rights reserved.
+  * website:developerlab.cn
+	*
+	* Copyright (c) 2020 Lanceli All rights reserved.
   ******************************************************************************
   */
   
